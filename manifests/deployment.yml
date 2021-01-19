@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: bpdmsawardwinner
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bpdmsawardwinner
+    spec:
+      containers:
+        - name: bpdmsawardwinner
+          image: cstarregistry.azurecr.io/bpdmsawardwinner
+          ports:
+          - containerPort: 8080

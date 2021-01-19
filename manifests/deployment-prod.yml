@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bpdmsawardwinner
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: bpdmsawardwinner
+  template:
+    metadata:
+      labels:
+        app: bpdmsawardwinner
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: '8080'
+        prometheus.io/scrape: 'true'
+    spec:
+      containers:
+        - name: bpdmsawardwinner
+          image: cstarprodregistry.azurecr.io/bpdmsawardwinner
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: postgres-credentials
+            - secretRef:
+                name: bpdmsawardwinner
+            - configMapRef:
+                name: eventhub-logging
+            - configMapRef:
+                name: eventhub-common
+            - configMapRef:
+                name: bpdmsawardwinner
+            - configMapRef:
+                name: jvm
+          resources:
+            limits:
+              cpu: 800m
+              memory: 4Gi
+            requests:
+              cpu: 50m
+              memory: 256Mi
+      hostAliases:
+        - hostnames:
+            - u87cstarprod.servicebus.windows.net
+          ip: 10.70.132.4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
