@@ -7,5 +7,5 @@ import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
  */
 public interface AwardWinnerService {
 
-    void updateAwardWinner(AwardWinner awardWinner);
+    AwardWinner updateAwardWinner(AwardWinner awardWinner);
 }

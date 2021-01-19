@@ -25,7 +25,7 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
     }
 
     @Override
-    public void updateAwardWinner(AwardWinner awardWinner) {
-
+    public AwardWinner updateAwardWinner(AwardWinner awardWinner) {
+        return awardWinnerDAO.update(awardWinner);
     }
 }

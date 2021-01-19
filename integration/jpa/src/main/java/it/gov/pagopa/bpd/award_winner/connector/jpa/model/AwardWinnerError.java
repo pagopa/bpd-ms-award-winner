@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -22,14 +23,17 @@ public class AwardWinnerError implements Serializable {
     @Column(name = "id_n")
     private Long id;
 
-    @Column(name="origin_topic_s")
-    String originTopic;
+    @Column(name = "result_s")
+    String result;
 
-    @Column(name="origin_listener_s")
-    String originListener;
+    @Column(name = "result_reason_s")
+    String resultReason;
 
-    @Column(name="origin_request_id_s")
-    String originRequestId;
+    @Column(name = "cro_s")
+    String cro;
+
+    @Column(name = "execution_date_t")
+    LocalDate executionDate;
 
     @Column(name="exception_message_s")
     String exceptionMessage;
