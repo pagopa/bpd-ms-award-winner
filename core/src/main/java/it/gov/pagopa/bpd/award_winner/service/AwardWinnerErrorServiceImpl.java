@@ -1,7 +1,6 @@
 package it.gov.pagopa.bpd.award_winner.service;
 
 import eu.sia.meda.service.BaseService;
-import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerErrorDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerError;
 import org.springframework.stereotype.Service;

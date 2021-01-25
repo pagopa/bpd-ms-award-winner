@@ -14,7 +14,7 @@ import java.util.List;
  * Data Access Object to manage all CRUD operations to the database
  */
 @Repository
-public interface AwardWinnerErrorDAO extends CrudJpaDAO<AwardWinnerError, String> {
+public interface AwardWinnerErrorDAO extends CrudJpaDAO<AwardWinnerError, Long> {
 
     List<AwardWinnerError> findByToResubmit(Boolean toResubmit);
 

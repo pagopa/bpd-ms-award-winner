@@ -1,9 +1,11 @@
 package it.gov.pagopa.bpd.award_winner.listener;
 
 import eu.sia.meda.eventlistener.BaseConsumerAwareEventListener;
+import it.gov.pagopa.bpd.award_winner.command.SavePaymentInfoOnErrorCommand;
 import it.gov.pagopa.bpd.award_winner.command.UpdateAwardWinnerCommand;
 import it.gov.pagopa.bpd.award_winner.listener.factory.ModelFactory;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerCommandModel;
+import it.gov.pagopa.bpd.award_winner.model.AwardWinnerErrorCommandModel;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
@@ -24,13 +26,16 @@ import java.nio.charset.StandardCharsets;
 public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener {
 
     private final ModelFactory<Pair<byte[], Headers>, AwardWinnerCommandModel> updateAwardWinnerCommandModelFactory;
+    private final ModelFactory<Pair<byte[], Headers>, AwardWinnerErrorCommandModel> saveAwardWinnerErrorCommandModelFactory;
     private final BeanFactory beanFactory;
 
     @Autowired
     public OnInfoPaymentRequestListener(
             ModelFactory<Pair<byte[], Headers>, AwardWinnerCommandModel> updateAwardWinnerCommandModelFactory,
+            ModelFactory<Pair<byte[], Headers>, AwardWinnerErrorCommandModel> saveAwardWinnerErrorCommandModelFactory,
             BeanFactory beanFactory) {
         this.updateAwardWinnerCommandModelFactory = updateAwardWinnerCommandModelFactory;
+        this.saveAwardWinnerErrorCommandModelFactory = saveAwardWinnerErrorCommandModelFactory;
         this.beanFactory = beanFactory;
     }
 
@@ -49,6 +54,7 @@ public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener
     public void onReceived(byte[] payload, Headers headers) {
 
         AwardWinnerCommandModel awardWinnerCommandModel = null;
+        AwardWinnerErrorCommandModel awardWinnerErrorCommandModel = null;
 
         try {
 
@@ -86,7 +92,7 @@ public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener
                 payloadString = new String(payload, StandardCharsets.UTF_8);
                 error = String.format("Unexpected error during transaction processing: %s, %s",
                         payloadString, e.getMessage());
-                throw e;
+
             } else if (payload != null) {
                 error = String.format("Something gone wrong during the evaluation of the payload: %s, %s",
                         payloadString, e.getMessage());
@@ -95,8 +101,19 @@ public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener
                 }
             }
 
-            //TODO infine viene richiamato il metodo per il salvataggio su tabella di errori
+            //TODO Aggiungere gestione errori
+//            awardWinnerErrorCommandModel = saveAwardWinnerErrorCommandModelFactory
+//                    .createModel(Pair.of(payload, headers));
+//            SavePaymentInfoOnErrorCommand errorCommand = beanFactory.getBean(
+//                    SavePaymentInfoOnErrorCommand.class, awardWinnerErrorCommandModel);
+//
+//            if (!errorCommand.execute()) {
+//                throw new Exception("Failed to execute SavePaymentInfoOnErrorCommand");
+//            }
 
+            if (log.isDebugEnabled()) {
+                log.debug("SavePaymentInfoOnErrorCommand successfully executed for inbound message");
+            }
 
         }
     }

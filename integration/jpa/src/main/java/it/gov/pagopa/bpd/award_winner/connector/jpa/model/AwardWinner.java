@@ -77,7 +77,7 @@ public class AwardWinner extends BaseEntity {
         NEW, SENT, RECOVERY
     }
 
-    @Column(name = "result_s")
+    @Column(name = "esito_bonifico_s")
     String result;
 
     @Column(name = "result_reason_s")
@@ -86,7 +86,7 @@ public class AwardWinner extends BaseEntity {
     @Column(name = "cro_s")
     String cro;
 
-    @Column(name = "execution_date_t")
+    @Column(name = "data_esecuzione_t")
     LocalDate executionDate;
 
 

@@ -44,7 +44,7 @@ public class UpdateAwardWinnerCommandTest extends BaseTest {
     }
 
     @Test
-    public void TestExecute_OK() {
+    public void TestExecute_OK() throws Exception {
 
         PaymentInfoAwardWinner paymentInfoAwardWinner = getRequestModel();
         AwardWinner savedModel = getSavedModel();

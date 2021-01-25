@@ -1,8 +1,7 @@
 package it.gov.pagopa.bpd.award_winner.connector.jpa.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import it.gov.pagopa.bpd.common.connector.jpa.model.BaseEntity;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,9 +14,11 @@ import java.time.OffsetDateTime;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Table(name = "bpd_award_winner_error")
-public class AwardWinnerError implements Serializable {
+public class AwardWinnerError extends BaseEntity {
 
     @Id
     @Column(name = "id_n")

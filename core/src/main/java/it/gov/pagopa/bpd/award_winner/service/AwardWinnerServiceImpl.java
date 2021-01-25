@@ -7,6 +7,8 @@ import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * @See AwardWinnerService
  */
@@ -14,18 +16,28 @@ import org.springframework.stereotype.Service;
 class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
 
     private final AwardWinnerDAO awardWinnerDAO;
-    private final AwardWinnerErrorDAO awardWinnerErrorDAO;
 
 
     @Autowired
-    public AwardWinnerServiceImpl(AwardWinnerDAO awardWinnerDAO,
-                                        AwardWinnerErrorDAO awardWinnerErrorDAO) {
+    public AwardWinnerServiceImpl(AwardWinnerDAO awardWinnerDAO) {
         this.awardWinnerDAO = awardWinnerDAO;
-        this.awardWinnerErrorDAO = awardWinnerErrorDAO;
     }
 
     @Override
-    public AwardWinner updateAwardWinner(AwardWinner awardWinner) {
-        return awardWinnerDAO.update(awardWinner);
+    public AwardWinner updateAwardWinner(AwardWinner awardWinner) throws Exception {
+
+        Optional<AwardWinner> storedAwardWinner = awardWinnerDAO.findById(awardWinner.getId());
+
+        if(!storedAwardWinner.isPresent()){
+            throw new Exception("Id not found");
+        }
+
+
+        storedAwardWinner.get().setResult(awardWinner.getResult());
+        storedAwardWinner.get().setResultReason(awardWinner.getResultReason());
+        storedAwardWinner.get().setCro(awardWinner.getCro());
+        storedAwardWinner.get().setExecutionDate(awardWinner.getExecutionDate());
+
+        return awardWinnerDAO.update(storedAwardWinner.get());
     }
 }

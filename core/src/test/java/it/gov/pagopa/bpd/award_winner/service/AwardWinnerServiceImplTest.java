@@ -1,9 +1,18 @@
 package it.gov.pagopa.bpd.award_winner.service;
 
+import eu.sia.meda.BaseTest;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerErrorDAO;
+import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,33 +23,44 @@ import javax.annotation.PostConstruct;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = AwardWinnerServiceImpl.class)
-@TestPropertySource(locations = "classpath:config/awardWinner.properties")
-public class AwardWinnerServiceImplTest {
+public class AwardWinnerServiceImplTest extends BaseTest {
 
 
 
     @MockBean
     private AwardWinnerDAO awardWinnerDAOMock;
-    @MockBean
-    private AwardWinnerErrorDAO awardWinnerErrorDAOMock;
+
     @Autowired
     private AwardWinnerService awardWinnerService;
 
 
-    @PostConstruct
-    public void configureTest() {
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
+    @Before
+    public void initTest() {
+        Mockito.reset(awardWinnerDAOMock);
+        awardWinnerService = new AwardWinnerServiceImpl(awardWinnerDAOMock);
     }
 
-
     @Test
-    public void update_OK() {
+    public void update_OK() throws Exception {
+        AwardWinner awardWinner = AwardWinner.builder().build();
+        BDDMockito.doReturn(awardWinner).when(awardWinnerDAOMock).update(Mockito.eq(awardWinner));
+        awardWinner = awardWinnerService.updateAwardWinner(awardWinner);
+        Assert.assertNotNull(awardWinner);
+        BDDMockito.verify(awardWinnerDAOMock).update(Mockito.eq(awardWinner));
     }
 
-
     @Test
-    public void update_KO() {
-
+    public void update_KO() throws Exception {
+        BDDMockito.when(awardWinnerDAOMock.update(Mockito.any())).thenAnswer(
+                invocation -> {
+                    throw new Exception();
+                });
+        expectedException.expect(Exception.class);
+        awardWinnerService.updateAwardWinner(AwardWinner.builder().build());
+        BDDMockito.verify(awardWinnerDAOMock).update(Mockito.any());
     }
 
 

@@ -3,8 +3,10 @@ package it.gov.pagopa.bpd.award_winner.listener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.sia.meda.event.service.ErrorPublisherService;
 import eu.sia.meda.eventlistener.BaseEventListenerTest;
+import it.gov.pagopa.bpd.award_winner.command.SavePaymentInfoOnErrorCommand;
 import it.gov.pagopa.bpd.award_winner.command.UpdateAwardWinnerCommand;
 import it.gov.pagopa.bpd.award_winner.listener.factory.SaveInfoPaymentCommandModelFactory;
+import it.gov.pagopa.bpd.award_winner.listener.factory.SaveOnErrorCommandModelFactory;
 import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,8 +37,12 @@ public class OnInfoPaymentRequestListenerTest extends BaseEventListenerTest {
     OnInfoPaymentRequestListener onInfoPaymentRequestListenerSpy;
     @SpyBean
     SaveInfoPaymentCommandModelFactory saveInfoPaymentCommandModelFactorySpy;
+    @SpyBean
+    SaveOnErrorCommandModelFactory saveOnErrorCommandModelFactory;
     @MockBean
     UpdateAwardWinnerCommand updateAwardWinnerCommandMock;
+    @MockBean
+    SavePaymentInfoOnErrorCommand savePaymentInfoOnErrorCommandMock;
 
     @Value("${listeners.eventConfigurations.items.OnInfoPaymentRequestListener.topic}")
     private String topic;
@@ -47,8 +53,11 @@ public class OnInfoPaymentRequestListenerTest extends BaseEventListenerTest {
         Mockito.reset(
                 onInfoPaymentRequestListenerSpy,
                 saveInfoPaymentCommandModelFactorySpy,
-                updateAwardWinnerCommandMock);
+                saveOnErrorCommandModelFactory,
+                updateAwardWinnerCommandMock,
+                savePaymentInfoOnErrorCommandMock);
         Mockito.doReturn(true).when(updateAwardWinnerCommandMock).execute();
+        Mockito.doReturn(true).when(savePaymentInfoOnErrorCommandMock).execute();
 
     }
 
