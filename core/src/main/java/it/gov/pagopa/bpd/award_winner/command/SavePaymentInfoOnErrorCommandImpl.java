@@ -39,7 +39,7 @@ class SavePaymentInfoOnErrorCommandImpl extends BaseCommand<Boolean> implements 
     private AwardWinnerErrorService awardWinnerErrorService;
     private AwardWinnerErrorMapper awardWinnerErrorMapper;
 
-    public SavePaymentInfoOnErrorCommandImpl(AwardWinnerErrorCommandModel awardWinnerErrorCommandModel, String description) {
+    public SavePaymentInfoOnErrorCommandImpl(AwardWinnerErrorCommandModel awardWinnerErrorCommandModel) {
         this.awardWinnerErrorCommandModel = awardWinnerErrorCommandModel;
     }
 
@@ -67,7 +67,7 @@ class SavePaymentInfoOnErrorCommandImpl extends BaseCommand<Boolean> implements 
             //TODO Abilitare il validate?
 //            validateRequest(paymentInfoAwardWinner);
 
-            AwardWinnerError awardWinnerError = awardWinnerErrorMapper.map(paymentInfoAwardWinner, "description");
+            AwardWinnerError awardWinnerError = awardWinnerErrorMapper.map(paymentInfoAwardWinner, awardWinnerErrorCommandModel.getExceptionDescription());
 
             OffsetDateTime save_start = OffsetDateTime.now();
 

@@ -19,8 +19,7 @@ import java.nio.charset.StandardCharsets;
  */
 
 @Component
-public class SaveOnErrorCommandModelFactory implements
-        ModelFactory<Pair<byte[], Headers>, AwardWinnerErrorCommandModel> {
+public class SaveOnErrorCommandModelFactory  {
 
     private final ObjectMapper objectMapper;
 
@@ -36,12 +35,12 @@ public class SaveOnErrorCommandModelFactory implements
      */
 
     @SneakyThrows
-    @Override
-    public AwardWinnerErrorCommandModel createModel(Pair<byte[], Headers> requestData) {
+    public AwardWinnerErrorCommandModel createModel(Pair<byte[], Headers> requestData, String exceptionDescription) {
         PaymentInfoAwardWinner paymentInfoAwardWinner = parsePayload(requestData.getLeft());
         return AwardWinnerErrorCommandModel.builder()
                 .payload(paymentInfoAwardWinner)
                 .headers(requestData.getRight())
+                .exceptionDescription(exceptionDescription)
                 .build();
     }
 

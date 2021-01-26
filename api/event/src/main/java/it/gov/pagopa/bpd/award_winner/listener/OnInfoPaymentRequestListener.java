@@ -4,6 +4,7 @@ import eu.sia.meda.eventlistener.BaseConsumerAwareEventListener;
 import it.gov.pagopa.bpd.award_winner.command.SavePaymentInfoOnErrorCommand;
 import it.gov.pagopa.bpd.award_winner.command.UpdateAwardWinnerCommand;
 import it.gov.pagopa.bpd.award_winner.listener.factory.ModelFactory;
+import it.gov.pagopa.bpd.award_winner.listener.factory.SaveOnErrorCommandModelFactory;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerCommandModel;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerErrorCommandModel;
 import lombok.SneakyThrows;
@@ -26,13 +27,13 @@ import java.nio.charset.StandardCharsets;
 public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener {
 
     private final ModelFactory<Pair<byte[], Headers>, AwardWinnerCommandModel> updateAwardWinnerCommandModelFactory;
-    private final ModelFactory<Pair<byte[], Headers>, AwardWinnerErrorCommandModel> saveAwardWinnerErrorCommandModelFactory;
+    private final SaveOnErrorCommandModelFactory saveAwardWinnerErrorCommandModelFactory;
     private final BeanFactory beanFactory;
 
     @Autowired
     public OnInfoPaymentRequestListener(
             ModelFactory<Pair<byte[], Headers>, AwardWinnerCommandModel> updateAwardWinnerCommandModelFactory,
-            ModelFactory<Pair<byte[], Headers>, AwardWinnerErrorCommandModel> saveAwardWinnerErrorCommandModelFactory,
+            SaveOnErrorCommandModelFactory saveAwardWinnerErrorCommandModelFactory,
             BeanFactory beanFactory) {
         this.updateAwardWinnerCommandModelFactory = updateAwardWinnerCommandModelFactory;
         this.saveAwardWinnerErrorCommandModelFactory = saveAwardWinnerErrorCommandModelFactory;
@@ -102,14 +103,16 @@ public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener
             }
 
             //TODO Aggiungere gestione errori
-//            awardWinnerErrorCommandModel = saveAwardWinnerErrorCommandModelFactory
-//                    .createModel(Pair.of(payload, headers));
-//            SavePaymentInfoOnErrorCommand errorCommand = beanFactory.getBean(
-//                    SavePaymentInfoOnErrorCommand.class, awardWinnerErrorCommandModel);
-//
-//            if (!errorCommand.execute()) {
-//                throw new Exception("Failed to execute SavePaymentInfoOnErrorCommand");
-//            }
+            awardWinnerErrorCommandModel = saveAwardWinnerErrorCommandModelFactory
+                    .createModel(Pair.of(payload, headers), error);
+
+            SavePaymentInfoOnErrorCommand errorCommand = beanFactory.getBean(
+                    SavePaymentInfoOnErrorCommand.class, awardWinnerErrorCommandModel);
+
+
+            if (!errorCommand.execute()) {
+                throw new Exception("Failed to execute SavePaymentInfoOnErrorCommand");
+            }
 
             if (log.isDebugEnabled()) {
                 log.debug("SavePaymentInfoOnErrorCommand successfully executed for inbound message");
