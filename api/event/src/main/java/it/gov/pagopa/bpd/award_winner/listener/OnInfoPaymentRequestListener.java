@@ -102,7 +102,6 @@ public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener
                 }
             }
 
-            //TODO Aggiungere gestione errori
             awardWinnerErrorCommandModel = saveAwardWinnerErrorCommandModelFactory
                     .createModel(Pair.of(payload, headers), error);
 
