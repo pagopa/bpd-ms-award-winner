@@ -108,7 +108,6 @@ public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener
             SavePaymentInfoOnErrorCommand errorCommand = beanFactory.getBean(
                     SavePaymentInfoOnErrorCommand.class, awardWinnerErrorCommandModel);
 
-
             if (!errorCommand.execute()) {
                 throw new Exception("Failed to execute SavePaymentInfoOnErrorCommand");
             }

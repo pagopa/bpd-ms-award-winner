@@ -1,10 +1,8 @@
 package it.gov.pagopa.bpd.award_winner.controller;
 
 import eu.sia.meda.core.controller.StatelessController;
-import it.gov.pagopa.bpd.award_winner.controller.factory.ModelFactory;
-import it.gov.pagopa.bpd.award_winner.controller.model.AwardWinnerDTO;
-import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
-import it.gov.pagopa.bpd.award_winner.service.AwardWinnerService;
+import it.gov.pagopa.bpd.award_winner.command.SubmitFlaggedRecordsCommand;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,29 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 class BpdAwardWinnerControllerImpl extends StatelessController implements BpdAwardWinnerController {
 
-    private final AwardWinnerService awardWinnerService;
-    private final ModelFactory<AwardWinnerDTO, PaymentInfoAwardWinner> awardWinnerFactory;
-
+    private final BeanFactory beanFactory;
 
     @Autowired
-    public BpdAwardWinnerControllerImpl(AwardWinnerService awardWinnerService,
-                                              ModelFactory<AwardWinnerDTO, PaymentInfoAwardWinner> awardWinnerFactory) {
-        this.awardWinnerService = awardWinnerService;
-        this.awardWinnerFactory = awardWinnerFactory;
+    BpdAwardWinnerControllerImpl(BeanFactory beanFactory) {
+        this.beanFactory = beanFactory;
     }
 
-
-//    @Override
-//    public AwardWinnerResource find(String hpan, String fiscalCode) {
-//        if (logger.isDebugEnabled()) {
-//            logger.debug("BpdAwardWinnerControllerImpl.find");
-//            logger.debug("hpan = [" + hpan + "]");
-//            logger.debug("fiscalCode = [" + fiscalCode + "]");
-//        }
-//
-//        final List<AwardWinner> entity = awardWinnerService.find(hpan, fiscalCode);
-//
-//        return awardWinnerResourceAssembler.toResource(entity);
-//    }
-
+    @Override
+    public void resubmitInfoPayments() throws Exception {
+        SubmitFlaggedRecordsCommand command =
+                beanFactory.getBean(SubmitFlaggedRecordsCommand.class);
+        command.execute();
+    }
 }

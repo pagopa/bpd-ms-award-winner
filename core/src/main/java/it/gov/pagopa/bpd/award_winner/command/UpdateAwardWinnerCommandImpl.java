@@ -2,10 +2,10 @@ package it.gov.pagopa.bpd.award_winner.command;
 
 import eu.sia.meda.core.command.BaseCommand;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
+import it.gov.pagopa.bpd.award_winner.mapper.AwardWinnerMapper;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerCommandModel;
 import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerService;
-import it.gov.pagopa.bpd.award_winner.mapper.AwardWinnerMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.validation.*;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 /**
@@ -58,35 +55,11 @@ class UpdateAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Updat
 
         try {
 
-            OffsetDateTime exec_start = OffsetDateTime.now();
-
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss.SSSXXXXX");
-
             validateRequest(paymentInfoAwardWinner);
 
             AwardWinner awardWinner = awardWinnerMapper.map(paymentInfoAwardWinner);
 
-            OffsetDateTime save_start = OffsetDateTime.now();
-
             awardWinnerService.updateAwardWinner(awardWinner);
-
-            OffsetDateTime save_end = OffsetDateTime.now();
-
-            log.info("Saved AwardWinner for id: {}" +
-                            "- Started at {}, Ended at {} - Total exec time: {}",
-                    awardWinner.getId(),
-                    dateTimeFormatter.format(save_start),
-                    dateTimeFormatter.format(save_end),
-                    ChronoUnit.MILLIS.between(save_start, save_end));
-
-            OffsetDateTime end_exec = OffsetDateTime.now();
-
-            log.info("Executed UpdateAwardWinnerCommand for awardWinner: {}" +
-                            "- Started at {}, Ended at {} - Total exec time: {}",
-                    awardWinner.getId(),
-                    dateTimeFormatter.format(exec_start),
-                    dateTimeFormatter.format(end_exec),
-                    ChronoUnit.MILLIS.between(exec_start, end_exec));
 
             return true;
 

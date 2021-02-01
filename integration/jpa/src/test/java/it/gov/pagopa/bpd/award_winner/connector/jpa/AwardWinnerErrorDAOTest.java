@@ -9,23 +9,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.function.Function;
 
-public class AwardWinnerErrorDAOTest extends BaseCrudJpaDAOTest<AwardWinnerErrorDAO, AwardWinnerError, Long> {
-
-    @Data
-    private static class CitizenCriteria implements CriteriaQuery<AwardWinnerError> {
-        private Long id;
-    }
+public class AwardWinnerErrorDAOTest extends BaseCrudJpaDAOTest<AwardWinnerErrorDAO, AwardWinnerError, String> {
 
     @Autowired
     private AwardWinnerErrorDAO awardWinnerErrorDAO;
 
-
     @Override
     protected CriteriaQuery<? super AwardWinnerError> getMatchAlreadySavedCriteria() {
         AwardWinnerErrorDAOTest.CitizenCriteria criteriaQuery = new AwardWinnerErrorDAOTest.CitizenCriteria();
-        criteriaQuery.setId(getStoredId());
+        criteriaQuery.setRecordId(String.valueOf(getStoredId()));
 
         return criteriaQuery;
+    }
+
+    @Override
+    protected void setId(AwardWinnerError entity, String id) {
+        entity.setRecordId(id);
     }
 
     @Override
@@ -33,16 +32,14 @@ public class AwardWinnerErrorDAOTest extends BaseCrudJpaDAOTest<AwardWinnerError
         return awardWinnerErrorDAO;
     }
 
-
     @Override
-    protected void setId(AwardWinnerError entity, Long id) {
-        entity.setId(id);
+    protected String getId(AwardWinnerError entity) {
+        return entity.getRecordId();
     }
 
-
     @Override
-    protected Long getId(AwardWinnerError entity) {
-        return entity.getId();
+    protected Function<Integer, String> idBuilderFn() {
+        return (bias) -> "recordId" + bias;
     }
 
 
@@ -51,10 +48,9 @@ public class AwardWinnerErrorDAOTest extends BaseCrudJpaDAOTest<AwardWinnerError
         entity.setResultReason("changed");
     }
 
-
-    @Override
-    protected Function<Integer, Long> idBuilderFn() {
-        return Long::valueOf;
+    @Data
+    private static class CitizenCriteria implements CriteriaQuery<AwardWinnerError> {
+        private String recordId;
     }
 
 

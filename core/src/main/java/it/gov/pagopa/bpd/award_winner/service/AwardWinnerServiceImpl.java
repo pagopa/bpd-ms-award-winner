@@ -2,7 +2,6 @@ package it.gov.pagopa.bpd.award_winner.service;
 
 import eu.sia.meda.service.BaseService;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerDAO;
-import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerErrorDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,6 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
         if(!storedAwardWinner.isPresent()){
             throw new Exception("Id not found");
         }
-
 
         storedAwardWinner.get().setResult(awardWinner.getResult());
         storedAwardWinner.get().setResultReason(awardWinner.getResultReason());

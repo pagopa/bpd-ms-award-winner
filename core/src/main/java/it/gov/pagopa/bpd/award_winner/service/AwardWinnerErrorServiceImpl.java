@@ -21,7 +21,7 @@ public class AwardWinnerErrorServiceImpl extends BaseService implements AwardWin
 
     @Override
     public AwardWinnerError saveErrorRecord(AwardWinnerError awardWinnerErrorRecord) {
-        return awardWinnerErrorDAO.save(awardWinnerErrorRecord);
+        return awardWinnerErrorDAO.update(awardWinnerErrorRecord);
     }
 
     @Override

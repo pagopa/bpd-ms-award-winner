@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
@@ -16,11 +15,14 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(of = {"id"}, callSuper = false)
+@EqualsAndHashCode(of = {"recordId"}, callSuper = false)
 @Table(name = "bpd_award_winner_error")
 public class AwardWinnerError extends BaseEntity {
 
     @Id
+    @Column(name = "record_id_s")
+    String recordId;
+
     @Column(name = "id_n")
     private Long id;
 
@@ -36,12 +38,21 @@ public class AwardWinnerError extends BaseEntity {
     @Column(name = "execution_date_t")
     LocalDate executionDate;
 
-    @Column(name="exception_message_s")
+    @Column(name = "exception_message_s")
     String exceptionMessage;
 
-    @Column(name="last_resubmit_date_t")
+    @Column(name = "last_resubmit_date_t")
     OffsetDateTime lastResubmitDate;
 
-    @Column(name="to_resubmit_b")
+    @Column(name = "to_resubmit_b")
     Boolean toResubmit;
+
+    @Column(name = "origin_topic_s")
+    String originTopic;
+
+    @Column(name = "origin_listener_s")
+    String originListener;
+
+    @Column(name = "origin_request_id_s")
+    String originRequestId;
 }
