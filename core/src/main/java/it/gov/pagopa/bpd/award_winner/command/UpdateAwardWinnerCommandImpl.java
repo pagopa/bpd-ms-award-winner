@@ -56,9 +56,7 @@ class UpdateAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Updat
         try {
 
             validateRequest(paymentInfoAwardWinner);
-
             AwardWinner awardWinner = awardWinnerMapper.map(paymentInfoAwardWinner);
-
             awardWinnerService.updateAwardWinner(awardWinner);
 
             return true;

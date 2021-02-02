@@ -103,7 +103,7 @@ public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener
             }
 
             awardWinnerErrorCommandModel = saveAwardWinnerErrorCommandModelFactory
-                    .createModel(Pair.of(payload, headers), error);
+                    .createModel(Pair.of(payload, headers), error, this);
 
             SavePaymentInfoOnErrorCommand errorCommand = beanFactory.getBean(
                     SavePaymentInfoOnErrorCommand.class, awardWinnerErrorCommandModel);

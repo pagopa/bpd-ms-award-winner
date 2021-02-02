@@ -12,9 +12,8 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(of = {"result"}, callSuper = false)
 public class PaymentInfoAwardWinner {
 
-    //TODO decommentare
-//    @NotNull
-//    @NotBlank
+    @NotNull
+    @NotBlank
     String uniqueID;
 
     @NotNull

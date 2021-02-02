@@ -19,5 +19,7 @@ public class AwardWinnerErrorCommandModel {
     private PaymentInfoAwardWinner payload;
     private Headers headers;
     private String exceptionDescription;
+    private String originListener;
+    private String originTopic;
 
 }

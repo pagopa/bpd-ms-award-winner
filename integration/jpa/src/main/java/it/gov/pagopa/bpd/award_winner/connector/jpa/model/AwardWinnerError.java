@@ -23,7 +23,7 @@ public class AwardWinnerError extends BaseEntity {
     String recordId;
 
     @Column(name = "id_s")
-    String uniqueId;
+    String uniqueID;
 
     @Column(name = "result_s")
     String result;

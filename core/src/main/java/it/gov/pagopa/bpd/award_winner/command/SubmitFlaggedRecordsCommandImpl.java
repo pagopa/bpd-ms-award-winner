@@ -74,20 +74,8 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
                 BaseContextHolder.getApplicationContext().setRequestId(requestId);
                 recordHeaders.add(AwardWinnerErrorConstants.USER_ID_HEADER,
                         "bpd-ms-award-winner".getBytes());
-//                recordHeaders.add(AwardWinnerErrorConstants.LISTENER_HEADER,
-//                        awardWinnerError.getOriginListener() == null ?
-//                                null :
-//                                awardWinnerError.getOriginListener().getBytes());
 
                 awardWinnerPublisherService.publishAwardWinnerEvent(paymentInfoAwardWinner, recordHeaders);
-
-
-//                //TODO eliminare salvataggio su award winner
-//                try {
-//                    awardWinnerService.updateAwardWinner(paymentInfoAwardWinner);
-//                } catch (Exception e) {
-//                    awardWinnerError.setExceptionMessage(e.getMessage());
-//                }
 
                 awardWinnerError.setToResubmit(false);
                 awardWinnerError.setLastResubmitDate(OffsetDateTime.now());

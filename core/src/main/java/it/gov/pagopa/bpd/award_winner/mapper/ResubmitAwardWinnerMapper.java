@@ -25,8 +25,6 @@ public class ResubmitAwardWinnerMapper {
         if (awardWinnerError != null) {
             paymentInfo = PaymentInfo.builder().build();
             BeanUtils.copyProperties(awardWinnerError, paymentInfo);
-            paymentInfo.setUniqueID(String.valueOf(awardWinnerError.getUniqueId()));
-            paymentInfo.setExecutionDate(String.valueOf(awardWinnerError.getExecutionDate()));
         }
 
         return paymentInfo;

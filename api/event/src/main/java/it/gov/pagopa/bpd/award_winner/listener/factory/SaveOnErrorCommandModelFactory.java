@@ -1,7 +1,7 @@
 package it.gov.pagopa.bpd.award_winner.listener.factory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.gov.pagopa.bpd.award_winner.model.AwardWinnerCommandModel;
+import eu.sia.meda.eventlistener.BaseListener;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerErrorCommandModel;
 import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
 import lombok.SneakyThrows;
@@ -35,12 +35,15 @@ public class SaveOnErrorCommandModelFactory  {
      */
 
     @SneakyThrows
-    public AwardWinnerErrorCommandModel createModel(Pair<byte[], Headers> requestData, String exceptionDescription) {
+    public AwardWinnerErrorCommandModel createModel(Pair<byte[], Headers> requestData,
+                                                    String exceptionDescription, BaseListener originListener) {
         PaymentInfoAwardWinner paymentInfoAwardWinner = parsePayload(requestData.getLeft());
         return AwardWinnerErrorCommandModel.builder()
                 .payload(paymentInfoAwardWinner)
                 .headers(requestData.getRight())
                 .exceptionDescription(exceptionDescription)
+                .originListener(originListener.getClass().getName())
+                .originTopic(originListener.getTopic())
                 .build();
     }
 
