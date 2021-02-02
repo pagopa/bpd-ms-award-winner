@@ -8,6 +8,6 @@ import org.springframework.context.annotation.PropertySource;
  * Configuration class for {@link AwardWinnerPublisherConnector}
  */
 @Configuration
-@PropertySource("classpath:config/csvPaymentInfoPublisher.properties")
+@PropertySource("classpath:config/awardWinnerPublisher.properties")
 public class AwardWinnerPublisherConfig {
 }

@@ -6,9 +6,6 @@ import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 /**
  * Class to be used to map a {@link PaymentInfoAwardWinner from an* {@link AwardWinner}
  */
@@ -24,15 +21,12 @@ public class AwardWinnerErrorMapper {
             PaymentInfoAwardWinner paymentInfoAwardWinner, String exceptionDescription) {
 
         AwardWinnerError awardWinnerError = null;
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         if (paymentInfoAwardWinner != null) {
             awardWinnerError = AwardWinnerError.builder().build();
             BeanUtils.copyProperties(paymentInfoAwardWinner, awardWinnerError);
-            awardWinnerError.setId(Long.valueOf(paymentInfoAwardWinner.getUniqueID()));
-            if(paymentInfoAwardWinner.getExecutionDate()!=null && !paymentInfoAwardWinner.getExecutionDate().isEmpty()){
-                awardWinnerError.setExecutionDate(LocalDate.parse(paymentInfoAwardWinner.getExecutionDate(), dtf));
-            }
+            awardWinnerError.setUniqueId(paymentInfoAwardWinner.getUniqueID());
             awardWinnerError.setExceptionMessage(exceptionDescription);
         }
 

@@ -2,12 +2,13 @@ package it.gov.pagopa.bpd.award_winner.command;
 
 import eu.sia.meda.core.command.BaseCommand;
 import eu.sia.meda.core.interceptors.BaseContextHolder;
-import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerError;
 import it.gov.pagopa.bpd.award_winner.mapper.ResubmitAwardWinnerMapper;
 import it.gov.pagopa.bpd.award_winner.model.constants.AwardWinnerErrorConstants;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerErrorService;
+import it.gov.pagopa.bpd.award_winner.service.AwardWinnerPublisherService;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerService;
+import it.gov.pagopa.bpd.consap_csv_connector.integration.event.model.PaymentInfo;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.header.internals.RecordHeaders;
@@ -31,7 +32,7 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
 
     private AwardWinnerErrorService awardWinnerErrorService;
     private AwardWinnerService awardWinnerService;
-
+    private AwardWinnerPublisherService awardWinnerPublisherService;
     private ResubmitAwardWinnerMapper resubmitAwardWinnerMapper;
 
 
@@ -41,10 +42,13 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
     public SubmitFlaggedRecordsCommandImpl(
             AwardWinnerErrorService awardWinnerErrorService,
             AwardWinnerService awardWinnerService,
-            ResubmitAwardWinnerMapper resubmitAwardWinnerMapper) {
+            ResubmitAwardWinnerMapper resubmitAwardWinnerMapper,
+            AwardWinnerPublisherService awardWinnerPublisherService
+    ) {
         this.awardWinnerErrorService = awardWinnerErrorService;
         this.awardWinnerService = awardWinnerService;
         this.resubmitAwardWinnerMapper = resubmitAwardWinnerMapper;
+        this.awardWinnerPublisherService = awardWinnerPublisherService;
     }
 
     /**
@@ -60,7 +64,7 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
         try {
             List<AwardWinnerError> awardWinnerErrorList = awardWinnerErrorService.findRecordsToResubmit();
             for (AwardWinnerError awardWinnerError : awardWinnerErrorList) {
-                AwardWinner awardWinner = resubmitAwardWinnerMapper.map(awardWinnerError);
+                PaymentInfo paymentInfoAwardWinner = resubmitAwardWinnerMapper.map(awardWinnerError);
 
                 RecordHeaders recordHeaders = new RecordHeaders();
                 String requestId = awardWinnerError.getOriginRequestId() == null ?
@@ -70,24 +74,20 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
                 BaseContextHolder.getApplicationContext().setRequestId(requestId);
                 recordHeaders.add(AwardWinnerErrorConstants.USER_ID_HEADER,
                         "bpd-ms-award-winner".getBytes());
-                recordHeaders.add(AwardWinnerErrorConstants.LISTENER_HEADER,
-                        awardWinnerError.getOriginListener() == null ?
-                                null :
-                                awardWinnerError.getOriginListener().getBytes());
+//                recordHeaders.add(AwardWinnerErrorConstants.LISTENER_HEADER,
+//                        awardWinnerError.getOriginListener() == null ?
+//                                null :
+//                                awardWinnerError.getOriginListener().getBytes());
 
-//               switch (awardWinnerError.getOriginTopic()) {
-//                   //TODO implementare publisher, inserire topic corretto e decommentare
-//                   case "bpd-trx":
-//                       bpdTransactionPublisherService.publishBpdTransactionEvent(transaction, recordHeaders);
-//                       break;
-//               }
+                awardWinnerPublisherService.publishAwardWinnerEvent(paymentInfoAwardWinner, recordHeaders);
 
-                //TODO eliminare salvataggio su award winner
-                try {
-                    awardWinnerService.updateAwardWinner(awardWinner);
-                } catch (Exception e) {
-                    awardWinnerError.setExceptionMessage(e.getMessage());
-                }
+
+//                //TODO eliminare salvataggio su award winner
+//                try {
+//                    awardWinnerService.updateAwardWinner(paymentInfoAwardWinner);
+//                } catch (Exception e) {
+//                    awardWinnerError.setExceptionMessage(e.getMessage());
+//                }
 
                 awardWinnerError.setToResubmit(false);
                 awardWinnerError.setLastResubmitDate(OffsetDateTime.now());
@@ -124,6 +124,12 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
     public void setAwardWinnerService(
             AwardWinnerService awardWinnerService) {
         this.awardWinnerService = awardWinnerService;
+    }
+
+    @Autowired
+    public void setAwardWinnerPublisherService(
+            AwardWinnerPublisherService awardWinnerPublisherService) {
+        this.awardWinnerPublisherService = awardWinnerPublisherService;
     }
 
 

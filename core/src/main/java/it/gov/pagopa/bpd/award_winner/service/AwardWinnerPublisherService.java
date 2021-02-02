@@ -11,6 +11,6 @@ public interface AwardWinnerPublisherService {
      *
      * @param paymentInfo PaymentInfo instance to be published
      */
-    void publishBpdTransactionEvent(PaymentInfo paymentInfo, RecordHeaders recordHeaders);
+    void publishAwardWinnerEvent(PaymentInfo paymentInfo, RecordHeaders recordHeaders);
 
 }

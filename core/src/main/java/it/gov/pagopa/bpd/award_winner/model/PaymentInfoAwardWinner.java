@@ -4,18 +4,17 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
-import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"uniqueID"}, callSuper = false)
+@EqualsAndHashCode(of = {"result"}, callSuper = false)
 public class PaymentInfoAwardWinner {
 
-    @NotNull
-    @NotBlank
+    //TODO decommentare
+//    @NotNull
+//    @NotBlank
     String uniqueID;
 
     @NotNull

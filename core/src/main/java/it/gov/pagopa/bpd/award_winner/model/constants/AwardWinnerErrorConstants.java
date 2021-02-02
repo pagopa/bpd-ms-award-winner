@@ -15,14 +15,8 @@ public class AwardWinnerErrorConstants {
     static {
         originListenerToTopic = new HashMap<>();
         originListenerToTopic.put(
-                "it.gov.pagopa.bpd.payment_instrument.listener.OnTransactionFilterRequestListener",
-                "rtd-trx");
-        originListenerToTopic.put(
-                "it.gov.pagopa.bpd.point_processor.listener.OnTransactionProcessRequestListener",
-                "bpd-trx");
-        originListenerToTopic.put(
-                "it.gov.pagopa.bpd.winning_transaction.listener.OnTransactionSaveRequestListener",
-                "bpd-trx-cashback");
+                "it.gov.pagopa.bpd.award_winner.listener.OnInfoPaymentRequestListener",
+                "bpd-consap");
     }
 
 }

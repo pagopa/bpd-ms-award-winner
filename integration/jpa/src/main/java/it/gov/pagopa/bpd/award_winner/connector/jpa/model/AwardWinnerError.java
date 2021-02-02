@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -23,8 +22,8 @@ public class AwardWinnerError extends BaseEntity {
     @Column(name = "record_id_s")
     String recordId;
 
-    @Column(name = "id_n")
-    private Long id;
+    @Column(name = "id_s")
+    String uniqueId;
 
     @Column(name = "result_s")
     String result;
@@ -35,8 +34,8 @@ public class AwardWinnerError extends BaseEntity {
     @Column(name = "cro_s")
     String cro;
 
-    @Column(name = "execution_date_t")
-    LocalDate executionDate;
+    @Column(name = "execution_date_s")
+    String executionDate;
 
     @Column(name = "exception_message_s")
     String exceptionMessage;

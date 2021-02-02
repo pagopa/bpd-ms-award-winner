@@ -58,13 +58,12 @@ class SavePaymentInfoOnErrorCommandImpl extends BaseCommand<Boolean> implements 
             AwardWinnerError awardWinnerError = awardWinnerErrorMapper.map(paymentInfoAwardWinner,
                     awardWinnerErrorCommandModel.getExceptionDescription());
             awardWinnerError.setToResubmit(false);
-            Header listenerHeader = headers.lastHeader(AwardWinnerErrorConstants.LISTENER_HEADER);
-            awardWinnerError.setOriginListener(
-                    listenerHeader == null ? null : new String(listenerHeader.value()));
-            //TODO definire il nome del topic
-            String originTopic = listenerHeader == null ? "bpd-consap" : AwardWinnerErrorConstants
-                    .originListenerToTopic.get(new String(listenerHeader.value()));
-            awardWinnerError.setOriginTopic(originTopic);
+//            Header listenerHeader = headers.lastHeader(AwardWinnerErrorConstants.LISTENER_HEADER);
+//            awardWinnerError.setOriginListener(
+//                    listenerHeader == null ? null : new String(listenerHeader.value()));
+//            String originTopic = listenerHeader == null ? "bpd-consap" : AwardWinnerErrorConstants
+//                    .originListenerToTopic.get(new String(listenerHeader.value()));
+//            awardWinnerError.setOriginTopic(originTopic);
             Header requestIdHeader = headers.lastHeader(AwardWinnerErrorConstants.REQUEST_ID_HEADER);
             awardWinnerError.setOriginRequestId(
                     requestIdHeader == null ? null : new String(requestIdHeader.value()));

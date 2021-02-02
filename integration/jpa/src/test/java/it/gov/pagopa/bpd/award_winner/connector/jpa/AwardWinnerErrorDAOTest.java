@@ -56,6 +56,6 @@ public class AwardWinnerErrorDAOTest extends BaseCrudJpaDAOTest<AwardWinnerError
 
     @Override
     protected String getIdName() {
-        return "id";
+        return "recordId";
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.test.context.TestPropertySource;
  */
 @Import({AwardWinnerPublisherConnector.class})
 @TestPropertySource(
-        locations = "classpath:config/testCsvTransactionPublisher.properties",
+        locations = "classpath:config/awardWinnerPublisher.properties",
         properties = {
 
                 "connectors.eventConfigurations.items.AwardWinnerPublisherConnector.bootstrapServers=${spring.embedded.kafka.brokers}"

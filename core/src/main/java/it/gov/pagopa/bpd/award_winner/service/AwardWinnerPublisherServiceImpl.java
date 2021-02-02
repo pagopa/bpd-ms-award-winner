@@ -2,9 +2,9 @@ package it.gov.pagopa.bpd.award_winner.service;
 
 import eu.sia.meda.event.transformer.SimpleEventResponseTransformer;
 import eu.sia.meda.service.BaseService;
+import it.gov.pagopa.bpd.award_winner.transformer.HeaderAwareRequestTransformer;
 import it.gov.pagopa.bpd.consap_csv_connector.integration.event.AwardWinnerPublisherConnector;
 import it.gov.pagopa.bpd.consap_csv_connector.integration.event.model.PaymentInfo;
-import it.gov.pagopa.bpd.transaction_error_manager.service.transformer.HeaderAwareRequestTransformer;
 import org.apache.kafka.common.header.internals.RecordHeaders;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class AwardWinnerPublisherServiceImpl extends BaseService implements Awar
     }
 
     @Override
-    public void publishBpdTransactionEvent(PaymentInfo paymentInfo, RecordHeaders recordHeaders) {
+    public void publishAwardWinnerEvent(PaymentInfo paymentInfo, RecordHeaders recordHeaders) {
         awardWinnerPublisherConnector.doCall(
                 paymentInfo, simpleEventRequestTransformer, simpleEventResponseTransformer, recordHeaders);
     }

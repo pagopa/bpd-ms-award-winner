@@ -2,8 +2,8 @@ package it.gov.pagopa.bpd.award_winner.connector.jpa;
 
 
 import eu.sia.meda.layers.connector.query.CriteriaQuery;
-import it.gov.pagopa.bpd.common.connector.jpa.BaseCrudJpaDAOTest;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
+import it.gov.pagopa.bpd.common.connector.jpa.BaseCrudJpaDAOTest;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -56,7 +56,6 @@ public class AwardWinnerDAOTest extends BaseCrudJpaDAOTest<AwardWinnerDAO, Award
     protected Function<Integer, Long> idBuilderFn() {
         return Long::valueOf;
     }
-
 
     @Override
     protected String getIdName() {

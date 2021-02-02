@@ -5,7 +5,6 @@ import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -28,10 +27,17 @@ public class AwardWinnerMapper {
         if (paymentInfoAwardWinner != null) {
             awardWinner = AwardWinner.builder().build();
             BeanUtils.copyProperties(paymentInfoAwardWinner, awardWinner);
-            awardWinner.setId(Long.valueOf(paymentInfoAwardWinner.getUniqueID()));
-            if(paymentInfoAwardWinner.getExecutionDate()!=null && !paymentInfoAwardWinner.getExecutionDate().isEmpty()){
-                awardWinner.setExecutionDate(LocalDate.parse(paymentInfoAwardWinner.getExecutionDate(), dtf));
-            }
+            //TODO rimuovere check null
+            long leftLimit = 1000000000L;
+            long rightLimit = 1000000000000L;
+            long generatedLong = leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
+            awardWinner.setId(paymentInfoAwardWinner.getUniqueID() == null ? Long.valueOf(generatedLong) :
+                    Long.valueOf(paymentInfoAwardWinner.getUniqueID()));
+
+            //TODO decommentare
+//            if(paymentInfoAwardWinner.getExecutionDate()!=null && !paymentInfoAwardWinner.getExecutionDate().isEmpty()){
+//                awardWinner.setExecutionDate(LocalDate.parse(paymentInfoAwardWinner.getExecutionDate(), dtf));
+//            }
         }
 
         return awardWinner;
