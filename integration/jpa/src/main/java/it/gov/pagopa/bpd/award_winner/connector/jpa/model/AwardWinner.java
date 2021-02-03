@@ -73,9 +73,6 @@ public class AwardWinner extends BaseEntity {
         NEW, SENT, RECOVERY
     }
 
-    @Column(name = "enabled_b")
-    Boolean enabled;
-
     @Column(name = "esito_bonifico_s")
     String result;
 

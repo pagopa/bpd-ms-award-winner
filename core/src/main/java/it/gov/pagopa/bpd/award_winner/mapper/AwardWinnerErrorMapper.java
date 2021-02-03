@@ -31,12 +31,6 @@ public class AwardWinnerErrorMapper {
             awardWinnerError = AwardWinnerError.builder().build();
             BeanUtils.copyProperties(awardWinnerErrorCommandModel, awardWinnerError);
             BeanUtils.copyProperties(payload, awardWinnerError);
-//            awardWinnerError.setResult(payload.getResult());
-//            awardWinnerError.setResultReason(payload.getResultReason() == null? null : payload.getResultReason());
-//            awardWinnerError.setCro(payload.getCro() == null ? null : payload.getCro());
-//            awardWinnerError.setExecutionDate(payload.getExecutionDate() == null ? null : payload.getExecutionDate());
-            awardWinnerError.setUniqueID(awardWinnerErrorCommandModel.getPayload().getUniqueID());
-            awardWinnerError.setExceptionMessage(awardWinnerErrorCommandModel.getExceptionDescription());
             Header requestIdHeader = awardWinnerErrorCommandModel.getHeaders() == null ? null
                     : awardWinnerErrorCommandModel.getHeaders()
                     .lastHeader(AwardWinnerErrorConstants.REQUEST_ID_HEADER);

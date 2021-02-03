@@ -35,7 +35,7 @@ public class SavePaymentInfoOnErrorCommandImplTest extends BaseTest {
         PaymentInfoAwardWinner paymentInfoAwardWinner = getRequestModel();
 
         AwardWinnerErrorCommandModel requestModel = AwardWinnerErrorCommandModel.builder().payload(paymentInfoAwardWinner)
-                .exceptionDescription("Exception description").build();
+                .exceptionMessage("Exception description").build();
 
         SavePaymentInfoOnErrorCommandImpl updateAwardWinnerCommand = new SavePaymentInfoOnErrorCommandImpl(
                 requestModel,

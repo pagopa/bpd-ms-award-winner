@@ -41,7 +41,7 @@ public class SaveOnErrorCommandModelFactory  {
         return AwardWinnerErrorCommandModel.builder()
                 .payload(paymentInfoAwardWinner)
                 .headers(requestData.getRight())
-                .exceptionDescription(exceptionDescription)
+                .exceptionMessage(exceptionDescription)
                 .originListener(originListener.getClass().getName())
                 .originTopic(originListener.getTopic())
                 .build();
