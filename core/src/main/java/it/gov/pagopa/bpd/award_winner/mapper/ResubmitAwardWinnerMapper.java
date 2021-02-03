@@ -2,7 +2,7 @@ package it.gov.pagopa.bpd.award_winner.mapper;
 
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerError;
-import it.gov.pagopa.bpd.consap_csv_connector.integration.event.model.PaymentInfo;
+import it.gov.pagopa.bpd.award_winner.integration.event.model.PaymentInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

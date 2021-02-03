@@ -37,7 +37,8 @@ public class AwardWinnerErrorMapper {
 //            awardWinnerError.setExecutionDate(payload.getExecutionDate() == null ? null : payload.getExecutionDate());
             awardWinnerError.setUniqueID(awardWinnerErrorCommandModel.getPayload().getUniqueID());
             awardWinnerError.setExceptionMessage(awardWinnerErrorCommandModel.getExceptionDescription());
-            Header requestIdHeader = awardWinnerErrorCommandModel.getHeaders()
+            Header requestIdHeader = awardWinnerErrorCommandModel.getHeaders() == null ? null
+                    : awardWinnerErrorCommandModel.getHeaders()
                     .lastHeader(AwardWinnerErrorConstants.REQUEST_ID_HEADER);
             awardWinnerError.setOriginRequestId(
                     requestIdHeader == null ? null : new String(requestIdHeader.value()));

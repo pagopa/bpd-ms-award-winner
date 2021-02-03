@@ -3,12 +3,11 @@ package it.gov.pagopa.bpd.award_winner.command;
 import eu.sia.meda.core.command.BaseCommand;
 import eu.sia.meda.core.interceptors.BaseContextHolder;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerError;
+import it.gov.pagopa.bpd.award_winner.integration.event.model.PaymentInfo;
 import it.gov.pagopa.bpd.award_winner.mapper.ResubmitAwardWinnerMapper;
 import it.gov.pagopa.bpd.award_winner.model.constants.AwardWinnerErrorConstants;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerErrorService;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerPublisherService;
-import it.gov.pagopa.bpd.award_winner.service.AwardWinnerService;
-import it.gov.pagopa.bpd.consap_csv_connector.integration.event.model.PaymentInfo;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.header.internals.RecordHeaders;
@@ -31,7 +30,6 @@ import java.util.List;
 class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements SubmitFlaggedRecordsCommand {
 
     private AwardWinnerErrorService awardWinnerErrorService;
-    private AwardWinnerService awardWinnerService;
     private AwardWinnerPublisherService awardWinnerPublisherService;
     private ResubmitAwardWinnerMapper resubmitAwardWinnerMapper;
 
@@ -41,12 +39,10 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
 
     public SubmitFlaggedRecordsCommandImpl(
             AwardWinnerErrorService awardWinnerErrorService,
-            AwardWinnerService awardWinnerService,
             ResubmitAwardWinnerMapper resubmitAwardWinnerMapper,
             AwardWinnerPublisherService awardWinnerPublisherService
     ) {
         this.awardWinnerErrorService = awardWinnerErrorService;
-        this.awardWinnerService = awardWinnerService;
         this.resubmitAwardWinnerMapper = resubmitAwardWinnerMapper;
         this.awardWinnerPublisherService = awardWinnerPublisherService;
     }
@@ -106,12 +102,6 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
     public void setAwardWinnerErrorService(
             AwardWinnerErrorService awardWinnerErrorService) {
         this.awardWinnerErrorService = awardWinnerErrorService;
-    }
-
-    @Autowired
-    public void setAwardWinnerService(
-            AwardWinnerService awardWinnerService) {
-        this.awardWinnerService = awardWinnerService;
     }
 
     @Autowired

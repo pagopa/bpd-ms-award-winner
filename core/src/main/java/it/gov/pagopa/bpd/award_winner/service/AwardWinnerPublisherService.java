@@ -1,6 +1,6 @@
 package it.gov.pagopa.bpd.award_winner.service;
 
-import it.gov.pagopa.bpd.consap_csv_connector.integration.event.model.PaymentInfo;
+import it.gov.pagopa.bpd.award_winner.integration.event.model.PaymentInfo;
 import org.apache.kafka.common.header.internals.RecordHeaders;
 
 public interface AwardWinnerPublisherService {

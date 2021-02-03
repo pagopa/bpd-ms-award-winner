@@ -2,7 +2,6 @@ package it.gov.pagopa.bpd.award_winner.service;
 
 import eu.sia.meda.BaseTest;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerErrorDAO;
-import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerError;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,10 +16,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = AwardWinnerErrorServiceImpl.class)
 public class AwardWinnerErrorServiceImplTest extends BaseTest {
-
 
 
     @MockBean
@@ -42,21 +43,33 @@ public class AwardWinnerErrorServiceImplTest extends BaseTest {
     @Test
     public void save_OK() {
         AwardWinnerError awardWinnerError = AwardWinnerError.builder().build();
-        BDDMockito.doReturn(awardWinnerError).when(awardWinnerErrorDAOMock).save(Mockito.eq(awardWinnerError));
+        BDDMockito.doReturn(awardWinnerError).when(awardWinnerErrorDAOMock).update(Mockito.eq(awardWinnerError));
         awardWinnerError = awardWinnerErrorService.saveErrorRecord(awardWinnerError);
         Assert.assertNotNull(awardWinnerError);
-        BDDMockito.verify(awardWinnerErrorDAOMock).save(Mockito.eq(awardWinnerError));
+        BDDMockito.verify(awardWinnerErrorDAOMock).update(Mockito.eq(awardWinnerError));
     }
 
     @Test
     public void save_KO() {
-        BDDMockito.when(awardWinnerErrorDAOMock.save(Mockito.any())).thenAnswer(
+        BDDMockito.when(awardWinnerErrorDAOMock.update(Mockito.any())).thenAnswer(
                 invocation -> {
                     throw new Exception();
                 });
         expectedException.expect(Exception.class);
         awardWinnerErrorService.saveErrorRecord(AwardWinnerError.builder().build());
-        BDDMockito.verify(awardWinnerErrorDAOMock).save(Mockito.any());
+        BDDMockito.verify(awardWinnerErrorDAOMock).update(Mockito.any());
+    }
+
+    @Test
+    public void find_OK() {
+        AwardWinnerError awardWinnerError = AwardWinnerError.builder().build();
+        List<AwardWinnerError> awardWinnerList = new ArrayList<>();
+        awardWinnerList.add(awardWinnerError);
+        BDDMockito.doReturn(awardWinnerList).when(awardWinnerErrorDAOMock).findByToResubmit(true);
+        List<AwardWinnerError> resultList = awardWinnerErrorService.findRecordsToResubmit();
+        Assert.assertNotNull(resultList);
+        Assert.assertEquals(resultList, awardWinnerList);
+        BDDMockito.verify(awardWinnerErrorDAOMock).findByToResubmit(true);
     }
 
 

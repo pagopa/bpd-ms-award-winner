@@ -2,7 +2,6 @@ package it.gov.pagopa.bpd.award_winner.service;
 
 import eu.sia.meda.BaseTest;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerDAO;
-import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerErrorDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,15 +10,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = AwardWinnerServiceImpl.class)
@@ -45,7 +42,9 @@ public class AwardWinnerServiceImplTest extends BaseTest {
 
     @Test
     public void update_OK() throws Exception {
-        AwardWinner awardWinner = AwardWinner.builder().build();
+        AwardWinner awardWinner = AwardWinner.builder().id(1L).build();
+        Optional<AwardWinner> optionalAwardWinner = Optional.ofNullable(AwardWinner.builder().id(1L).build());
+        BDDMockito.doReturn(optionalAwardWinner).when(awardWinnerDAOMock).findById(awardWinner.getId());
         BDDMockito.doReturn(awardWinner).when(awardWinnerDAOMock).update(Mockito.eq(awardWinner));
         awardWinner = awardWinnerService.updateAwardWinner(awardWinner);
         Assert.assertNotNull(awardWinner);
