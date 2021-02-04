@@ -14,7 +14,7 @@ public class AwardWinnerErrorConstants {
         originListenerToTopic = new HashMap<>();
         originListenerToTopic.put(
                 "it.gov.pagopa.bpd.award_winner.listener.OnInfoPaymentRequestListener",
-                "bpd-consap");
+                "bpd-winner-outcome");
     }
 
 }
