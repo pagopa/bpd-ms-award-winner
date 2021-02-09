@@ -46,8 +46,18 @@ class SavePaymentInfoOnErrorCommandImpl extends BaseCommand<Boolean> implements 
 
         try {
 
+            if (logger.isDebugEnabled()) {
+                logger.debug("Saving error record for awardWinner: " +
+                        awardWinnerErrorCommandModel.getPayload().getUniqueID());
+            }
+
             AwardWinnerError awardWinnerError = awardWinnerErrorMapper.map(awardWinnerErrorCommandModel);
             awardWinnerErrorService.saveErrorRecord(awardWinnerError);
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("Saved error record for awardWinner: " +
+                        awardWinnerErrorCommandModel.getPayload().getUniqueID());
+            }
 
             return true;
 

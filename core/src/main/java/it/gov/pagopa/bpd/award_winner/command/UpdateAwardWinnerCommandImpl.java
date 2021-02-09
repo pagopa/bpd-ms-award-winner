@@ -55,9 +55,19 @@ class UpdateAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Updat
 
         try {
 
+            if (logger.isDebugEnabled()) {
+                logger.debug("Saving info payment for awardWinner: " +
+                        paymentInfoAwardWinner.getUniqueID());
+            }
+
             validateRequest(paymentInfoAwardWinner);
             AwardWinner awardWinner = awardWinnerMapper.map(paymentInfoAwardWinner);
             awardWinnerService.updateAwardWinner(awardWinner);
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("Saved info payment for awardWinner: " +
+                        paymentInfoAwardWinner.getUniqueID());
+            }
 
             return true;
 

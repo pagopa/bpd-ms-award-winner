@@ -62,6 +62,11 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
             for (AwardWinnerError awardWinnerError : awardWinnerErrorList) {
                 PaymentInfo paymentInfoAwardWinner = resubmitAwardWinnerMapper.map(awardWinnerError);
 
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Resubmitting info payment for awardWinner: " +
+                            paymentInfoAwardWinner.getUniqueID());
+                }
+
                 RecordHeaders recordHeaders = new RecordHeaders();
                 String requestId = awardWinnerError.getOriginRequestId() == null ?
                         "Resubmitted" :
@@ -72,6 +77,11 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
                         "bpd-ms-award-winner".getBytes());
 
                 awardWinnerPublisherService.publishAwardWinnerEvent(paymentInfoAwardWinner, recordHeaders);
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Resubmitted info payment for awardWinner: " +
+                            paymentInfoAwardWinner.getUniqueID());
+                }
 
                 awardWinnerError.setToResubmit(false);
                 awardWinnerError.setLastResubmitDate(OffsetDateTime.now());

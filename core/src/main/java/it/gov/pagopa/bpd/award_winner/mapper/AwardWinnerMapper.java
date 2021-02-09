@@ -28,7 +28,7 @@ public class AwardWinnerMapper {
         if (paymentInfoAwardWinner != null) {
             awardWinner = AwardWinner.builder().build();
             BeanUtils.copyProperties(paymentInfoAwardWinner, awardWinner);
-            awardWinner.setId(Long.valueOf(paymentInfoAwardWinner.getUniqueID()));
+            awardWinner.setId(Long.valueOf(paymentInfoAwardWinner.getUniqueID().trim()));
 
             if (paymentInfoAwardWinner.getExecutionDate() != null && !paymentInfoAwardWinner.getExecutionDate().isEmpty()) {
                 awardWinner.setExecutionDate(LocalDate.parse(paymentInfoAwardWinner.getExecutionDate(), dtf));
