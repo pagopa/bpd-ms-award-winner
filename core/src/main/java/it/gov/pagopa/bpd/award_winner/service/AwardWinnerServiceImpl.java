@@ -38,4 +38,10 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
 
         return awardWinnerDAO.update(storedAwardWinner.get());
     }
+
+    @Override
+    public AwardWinner insertIntegrationAwardWinner(AwardWinner awardWinner) {
+        return awardWinnerDAO.update(awardWinner);
+    }
+
 }

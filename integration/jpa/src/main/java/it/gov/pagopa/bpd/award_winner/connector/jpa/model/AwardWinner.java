@@ -70,7 +70,7 @@ public class AwardWinner extends BaseEntity {
     Status status;
 
     public enum Status {
-        NEW, SENT, RECOVERY
+        NEW, SENT, RECOVERY, INTEGRATION
     }
 
     @Column(name = "esito_bonifico_s")
@@ -85,7 +85,8 @@ public class AwardWinner extends BaseEntity {
     @Column(name = "data_esecuzione_t")
     LocalDate executionDate;
 
-
+    @Column(name = "related_entry_id_n")
+    Long relatedEntryId;
 
 }
 

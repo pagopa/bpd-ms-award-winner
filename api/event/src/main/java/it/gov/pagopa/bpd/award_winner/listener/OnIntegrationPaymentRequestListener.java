@@ -1,6 +1,7 @@
 package it.gov.pagopa.bpd.award_winner.listener;
 
 import eu.sia.meda.eventlistener.BaseConsumerAwareEventListener;
+import it.gov.pagopa.bpd.award_winner.command.InsertAwardWinnerCommand;
 import it.gov.pagopa.bpd.award_winner.command.SavePaymentInfoOnErrorCommand;
 import it.gov.pagopa.bpd.award_winner.command.UpdateAwardWinnerCommand;
 import it.gov.pagopa.bpd.award_winner.listener.constants.ListenerHeaders;
@@ -8,6 +9,7 @@ import it.gov.pagopa.bpd.award_winner.listener.factory.ModelFactory;
 import it.gov.pagopa.bpd.award_winner.listener.factory.SaveOnErrorCommandModelFactory;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerCommandModel;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerErrorCommandModel;
+import it.gov.pagopa.bpd.award_winner.model.AwardWinnerIntegrationCommandModel;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
@@ -26,18 +28,19 @@ import java.util.Arrays;
 
 @Service
 @Slf4j
-public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener {
+public class OnIntegrationPaymentRequestListener extends BaseConsumerAwareEventListener {
 
-    private final ModelFactory<Pair<byte[], Headers>, AwardWinnerCommandModel> updateAwardWinnerCommandModelFactory;
+    private final ModelFactory<Pair<byte[], Headers>, AwardWinnerIntegrationCommandModel>
+            insertAwardWinnerCommandModelFactory;
     private final SaveOnErrorCommandModelFactory saveAwardWinnerErrorCommandModelFactory;
     private final BeanFactory beanFactory;
 
     @Autowired
-    public OnInfoPaymentRequestListener(
-            ModelFactory<Pair<byte[], Headers>, AwardWinnerCommandModel> updateAwardWinnerCommandModelFactory,
+    public OnIntegrationPaymentRequestListener(
+            ModelFactory<Pair<byte[], Headers>, AwardWinnerIntegrationCommandModel> insertAwardWinnerCommandModelFactory,
             SaveOnErrorCommandModelFactory saveAwardWinnerErrorCommandModelFactory,
             BeanFactory beanFactory) {
-        this.updateAwardWinnerCommandModelFactory = updateAwardWinnerCommandModelFactory;
+        this.insertAwardWinnerCommandModelFactory = insertAwardWinnerCommandModelFactory;
         this.saveAwardWinnerErrorCommandModelFactory = saveAwardWinnerErrorCommandModelFactory;
         this.beanFactory = beanFactory;
     }
@@ -56,7 +59,7 @@ public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener
     @Override
     public void onReceived(byte[] payload, Headers headers) {
 
-        AwardWinnerCommandModel awardWinnerCommandModel = null;
+        AwardWinnerIntegrationCommandModel awardWinnerCommandModel = null;
         AwardWinnerErrorCommandModel awardWinnerErrorCommandModel = null;
 
         try {
@@ -65,13 +68,13 @@ public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener
                 log.debug("Processing new request on inbound queue");
             }
 
-            awardWinnerCommandModel = updateAwardWinnerCommandModelFactory
+            awardWinnerCommandModel = insertAwardWinnerCommandModelFactory
                     .createModel(Pair.of(payload, headers));
-            UpdateAwardWinnerCommand command = beanFactory.getBean(
-                    UpdateAwardWinnerCommand.class, awardWinnerCommandModel);
+            InsertAwardWinnerCommand command = beanFactory.getBean(
+                    InsertAwardWinnerCommand.class, awardWinnerCommandModel);
 
-            if (headers.lastHeader(ListenerHeaders.INTEGRATION_HEADER) == null ||
-                    !Arrays.equals(headers.lastHeader(ListenerHeaders.INTEGRATION_HEADER).value(),
+            if (headers.lastHeader(ListenerHeaders.INTEGRATION_HEADER) != null &&
+                    Arrays.equals(headers.lastHeader(ListenerHeaders.INTEGRATION_HEADER).value(),
                             "true".getBytes())) {
 
                 if (!command.execute()) {

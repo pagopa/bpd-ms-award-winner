@@ -7,5 +7,7 @@ import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
  */
 public interface AwardWinnerService {
 
+    AwardWinner insertIntegrationAwardWinner(AwardWinner awardWinner);
+
     AwardWinner updateAwardWinner(AwardWinner awardWinner) throws Exception;
 }
