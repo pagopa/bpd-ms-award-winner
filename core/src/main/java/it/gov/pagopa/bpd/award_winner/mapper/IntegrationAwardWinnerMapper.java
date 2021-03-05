@@ -1,6 +1,7 @@
 package it.gov.pagopa.bpd.award_winner.mapper;
 
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
+import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerIntegration;
 import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
 import it.gov.pagopa.bpd.award_winner.model.PaymentIntegrationAwardWinner;
 import org.springframework.beans.BeanUtils;
@@ -23,37 +24,42 @@ public class IntegrationAwardWinnerMapper {
      * @param paymentIntegrationAwardWinner instance of an  {@link PaymentIntegrationAwardWinner}, to be mapped into a {@link AwardWinner}
      * @return {@link AwardWinner} instance from the input paymentIntegrationAwardWinner,
      */
-    public AwardWinner map(
+    public AwardWinnerIntegration map(
             PaymentIntegrationAwardWinner paymentIntegrationAwardWinner) {
 
-        AwardWinner awardWinner = null;
+        AwardWinnerIntegration awardWinner = null;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         if (paymentIntegrationAwardWinner != null) {
-            awardWinner = AwardWinner.builder().build();
-            awardWinner.setId(Long.valueOf(paymentIntegrationAwardWinner.getIdConsap().trim()
+            awardWinner = AwardWinnerIntegration.builder().build();
+            awardWinner.setConsapId(Long.valueOf(paymentIntegrationAwardWinner.getIdConsap().trim()
                     .replaceAll("[\uFEFF-\uFFFF]", "")));
-            awardWinner.setRelatedEntryId(Long.valueOf(paymentIntegrationAwardWinner.getIdPagoPa().trim()
+            awardWinner.setPagopaId(Long.valueOf(paymentIntegrationAwardWinner.getIdPagoPa().trim()
+                    .replaceAll("[\uFEFF-\uFFFF]", "")));
+            awardWinner.setComplaintId(Long.valueOf(paymentIntegrationAwardWinner.getIdComplaint().trim()
                     .replaceAll("[\uFEFF-\uFFFF]", "")));
 
+            awardWinner.setFiscalCode(paymentIntegrationAwardWinner.getFiscalCode());
+            awardWinner.setTechnicalAccountHolder(paymentIntegrationAwardWinner.getTechnicalCountProperty());
             awardWinner.setAccountHolderFiscalCode(paymentIntegrationAwardWinner.getFiscalCode());
             awardWinner.setAccountHolderName(paymentIntegrationAwardWinner.getName());
             awardWinner.setAccountHolderSurname(paymentIntegrationAwardWinner.getSurname());
             awardWinner.setAwardPeriodId(Long.valueOf(paymentIntegrationAwardWinner.getAwardPeriodId()));
-            awardWinner.setResult(paymentIntegrationAwardWinner.getEsito());
-            awardWinner.setResultReason(paymentIntegrationAwardWinner.getCashbackAmount());
+            awardWinner.setResult(paymentIntegrationAwardWinner.getResult());
+            awardWinner.setResultReason(paymentIntegrationAwardWinner.getResultReason());
             awardWinner.setPayoffInstr(paymentIntegrationAwardWinner.getIban());
             awardWinner.setCro(paymentIntegrationAwardWinner.getCro());
-            awardWinner.setCashback(BigDecimal.valueOf(
-                    Long.parseLong(paymentIntegrationAwardWinner.getCashbackAmount()))
-                    .divide(BigDecimal.valueOf(100L),2, RoundingMode.HALF_EVEN));
+            awardWinner.setCashback(paymentIntegrationAwardWinner.getCashbackAmount());
             awardWinner.setEnabled(true);
-            awardWinner.setInsertDate(OffsetDateTime.now());
-            awardWinner.setUpdateDate(OffsetDateTime.now());
+            awardWinner.setStatus(AwardWinnerIntegration.Status.INTEGRATION);
+            OffsetDateTime executionDate = OffsetDateTime.now();
+            awardWinner.setInsertDate(executionDate);
+            awardWinner.setUpdateDate(executionDate);
 
             if (paymentIntegrationAwardWinner.getExecutionDate() != null
                     && !paymentIntegrationAwardWinner.getExecutionDate().isEmpty()) {
-                awardWinner.setExecutionDate(LocalDate.parse(paymentIntegrationAwardWinner.getExecutionDate(), dtf));
+                awardWinner.setExecutionDate(
+                        LocalDate.parse(paymentIntegrationAwardWinner.getExecutionDate(), dtf));
             }
 
             if (paymentIntegrationAwardWinner.getPeriodStartDate() != null
@@ -64,7 +70,8 @@ public class IntegrationAwardWinnerMapper {
 
             if (paymentIntegrationAwardWinner.getPeriodEndDate() != null
                     && !paymentIntegrationAwardWinner.getPeriodEndDate().isEmpty()) {
-                awardWinner.setExecutionDate(LocalDate.parse(paymentIntegrationAwardWinner.getPeriodEndDate(), dtf));
+                awardWinner.setAwardPeriodEnd(
+                        LocalDate.parse(paymentIntegrationAwardWinner.getPeriodEndDate(), dtf));
             }
 
         }

@@ -1,4 +1,4 @@
-package it.gov.pagopa.bpd.award_winner.listener.constants;
+package it.gov.pagopa.bpd.award_winner.constants;
 
 public class ListenerHeaders {
 

@@ -2,6 +2,7 @@ package it.gov.pagopa.bpd.award_winner.command;
 
 import eu.sia.meda.core.command.BaseCommand;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
+import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerIntegration;
 import it.gov.pagopa.bpd.award_winner.mapper.AwardWinnerMapper;
 import it.gov.pagopa.bpd.award_winner.mapper.IntegrationAwardWinnerMapper;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerCommandModel;
@@ -64,7 +65,7 @@ class InsertAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Inser
             }
 
             validateRequest(paymentIntegrationAwardWinner);
-            AwardWinner awardWinner = awardWinnerMapper.map(paymentIntegrationAwardWinner);
+            AwardWinnerIntegration awardWinner = awardWinnerMapper.map(paymentIntegrationAwardWinner);
             awardWinnerService.insertIntegrationAwardWinner(awardWinner);
 
             if (logger.isDebugEnabled()) {

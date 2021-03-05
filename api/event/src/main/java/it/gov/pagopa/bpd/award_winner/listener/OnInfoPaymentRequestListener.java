@@ -3,7 +3,7 @@ package it.gov.pagopa.bpd.award_winner.listener;
 import eu.sia.meda.eventlistener.BaseConsumerAwareEventListener;
 import it.gov.pagopa.bpd.award_winner.command.SavePaymentInfoOnErrorCommand;
 import it.gov.pagopa.bpd.award_winner.command.UpdateAwardWinnerCommand;
-import it.gov.pagopa.bpd.award_winner.listener.constants.ListenerHeaders;
+import it.gov.pagopa.bpd.award_winner.constants.ListenerHeaders;
 import it.gov.pagopa.bpd.award_winner.listener.factory.ModelFactory;
 import it.gov.pagopa.bpd.award_winner.listener.factory.SaveOnErrorCommandModelFactory;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerCommandModel;
