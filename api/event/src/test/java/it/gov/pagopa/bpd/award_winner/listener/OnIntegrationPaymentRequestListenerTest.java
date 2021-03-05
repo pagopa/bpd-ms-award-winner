@@ -41,7 +41,7 @@ public class OnIntegrationPaymentRequestListenerTest extends BaseEventListenerTe
     @SpyBean
     SaveIntegrationPaymentCommandModelFactory saveIntegrationPaymentCommandModelFactorySpy;
     @SpyBean
-    SaveOnErrorCommandModelFactory saveOnErrorCommandModelFactory;
+    SaveIntegrationPaymentCommandModelFactory saveIntegrationPaymentCommandModelFactory;
     @MockBean
     InsertAwardWinnerCommand insertAwardWinnerCommand;
     @MockBean
@@ -56,7 +56,7 @@ public class OnIntegrationPaymentRequestListenerTest extends BaseEventListenerTe
         Mockito.reset(
                 onIntegrationPaymentRequestListenerSpy,
                 saveIntegrationPaymentCommandModelFactorySpy,
-                saveOnErrorCommandModelFactory,
+                saveIntegrationPaymentCommandModelFactory,
                 insertAwardWinnerCommand,
                 savePaymentInfoOnErrorCommandMock);
         Mockito.doReturn(true).when(insertAwardWinnerCommand).execute();

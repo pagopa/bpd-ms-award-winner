@@ -2,12 +2,12 @@ package it.gov.pagopa.bpd.award_winner.listener;
 
 import eu.sia.meda.eventlistener.BaseConsumerAwareEventListener;
 import it.gov.pagopa.bpd.award_winner.command.InsertAwardWinnerCommand;
-import it.gov.pagopa.bpd.award_winner.command.SavePaymentInfoOnErrorCommand;
+import it.gov.pagopa.bpd.award_winner.command.SavePaymentIntegrationOnErrorCommand;
 import it.gov.pagopa.bpd.award_winner.constants.ListenerHeaders;
 import it.gov.pagopa.bpd.award_winner.listener.factory.ModelFactory;
-import it.gov.pagopa.bpd.award_winner.listener.factory.SaveOnErrorCommandModelFactory;
-import it.gov.pagopa.bpd.award_winner.model.AwardWinnerErrorCommandModel;
+import it.gov.pagopa.bpd.award_winner.listener.factory.SaveOnIntegrationErrorCommandModelFactory;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerIntegrationCommandModel;
+import it.gov.pagopa.bpd.award_winner.model.AwardWinnerIntegrationErrorCommandModel;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
@@ -30,16 +30,16 @@ public class OnIntegrationPaymentRequestListener extends BaseConsumerAwareEventL
 
     private final ModelFactory<Pair<byte[], Headers>, AwardWinnerIntegrationCommandModel>
             insertAwardWinnerCommandModelFactory;
-    private final SaveOnErrorCommandModelFactory saveAwardWinnerErrorCommandModelFactory;
+    private final SaveOnIntegrationErrorCommandModelFactory saveOnIntegrationErrorCommandModelFactory;
     private final BeanFactory beanFactory;
 
     @Autowired
     public OnIntegrationPaymentRequestListener(
             ModelFactory<Pair<byte[], Headers>, AwardWinnerIntegrationCommandModel> insertAwardWinnerCommandModelFactory,
-            SaveOnErrorCommandModelFactory saveAwardWinnerErrorCommandModelFactory,
+            SaveOnIntegrationErrorCommandModelFactory saveOnIntegrationErrorCommandModelFactory,
             BeanFactory beanFactory) {
         this.insertAwardWinnerCommandModelFactory = insertAwardWinnerCommandModelFactory;
-        this.saveAwardWinnerErrorCommandModelFactory = saveAwardWinnerErrorCommandModelFactory;
+        this.saveOnIntegrationErrorCommandModelFactory = saveOnIntegrationErrorCommandModelFactory;
         this.beanFactory = beanFactory;
     }
 
@@ -58,7 +58,7 @@ public class OnIntegrationPaymentRequestListener extends BaseConsumerAwareEventL
     public void onReceived(byte[] payload, Headers headers) {
 
         AwardWinnerIntegrationCommandModel awardWinnerCommandModel = null;
-        AwardWinnerErrorCommandModel awardWinnerErrorCommandModel = null;
+        AwardWinnerIntegrationErrorCommandModel awardWinnerErrorCommandModel = null;
 
         try {
 
@@ -111,11 +111,11 @@ public class OnIntegrationPaymentRequestListener extends BaseConsumerAwareEventL
                 }
             }
 
-            awardWinnerErrorCommandModel = saveAwardWinnerErrorCommandModelFactory
+            awardWinnerErrorCommandModel = saveOnIntegrationErrorCommandModelFactory
                     .createModel(Pair.of(payload, headers), error, this);
 
-            SavePaymentInfoOnErrorCommand errorCommand = beanFactory.getBean(
-                    SavePaymentInfoOnErrorCommand.class, awardWinnerErrorCommandModel);
+            SavePaymentIntegrationOnErrorCommand errorCommand = beanFactory.getBean(
+                    SavePaymentIntegrationOnErrorCommand.class, awardWinnerErrorCommandModel);
 
             if (!errorCommand.execute()) {
                 throw new Exception("Failed to execute SavePaymentInfoOnErrorCommand");

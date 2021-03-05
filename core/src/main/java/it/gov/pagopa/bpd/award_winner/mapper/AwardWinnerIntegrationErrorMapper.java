@@ -43,7 +43,7 @@ public class AwardWinnerIntegrationErrorMapper {
             awardWinnerError.setToResubmit(false);
             Header header = awardWinnerErrorCommandModel.getHeaders().lastHeader(
                     ListenerHeaders.INTEGRATION_HEADER);
-            if (header.value() != null) {
+            if (header != null && header.value() != null) {
                 awardWinnerError.setIntegrationHeader(header.key());
             }
         }
