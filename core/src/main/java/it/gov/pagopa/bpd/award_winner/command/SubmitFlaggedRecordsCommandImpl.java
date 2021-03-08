@@ -3,6 +3,7 @@ package it.gov.pagopa.bpd.award_winner.command;
 import eu.sia.meda.core.command.BaseCommand;
 import eu.sia.meda.core.interceptors.BaseContextHolder;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerError;
+import it.gov.pagopa.bpd.award_winner.constants.ListenerHeaders;
 import it.gov.pagopa.bpd.award_winner.integration.event.model.PaymentInfo;
 import it.gov.pagopa.bpd.award_winner.integration.event.model.PaymentIntegration;
 import it.gov.pagopa.bpd.award_winner.mapper.ResubmitAwardWinnerMapper;
@@ -105,6 +106,9 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
                         logger.debug("Resubmitting integration payment for awardWinner: " +
                                 awardWinnerError.getIdConsap());
                     }
+
+                    recordHeaders.add(ListenerHeaders.INTEGRATION_HEADER,
+                            awardWinnerError.getIntegrationHeader().getBytes());
 
                     awardWinnerIntegrationPublisherService.publishIntegrationAwardWinnerEvent(
                             paymentIntegration, recordHeaders);
