@@ -5,9 +5,11 @@ import eu.sia.meda.event.service.ErrorPublisherService;
 import eu.sia.meda.eventlistener.BaseEventListenerTest;
 import it.gov.pagopa.bpd.award_winner.command.InsertAwardWinnerCommand;
 import it.gov.pagopa.bpd.award_winner.command.SavePaymentInfoOnErrorCommand;
+import it.gov.pagopa.bpd.award_winner.command.SavePaymentIntegrationOnErrorCommand;
 import it.gov.pagopa.bpd.award_winner.constants.ListenerHeaders;
 import it.gov.pagopa.bpd.award_winner.listener.factory.SaveIntegrationPaymentCommandModelFactory;
 import it.gov.pagopa.bpd.award_winner.listener.factory.SaveOnErrorCommandModelFactory;
+import it.gov.pagopa.bpd.award_winner.listener.factory.SaveOnIntegrationErrorCommandModelFactory;
 import it.gov.pagopa.bpd.award_winner.model.PaymentIntegrationAwardWinner;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.header.internals.RecordHeaders;
@@ -41,11 +43,11 @@ public class OnIntegrationPaymentRequestListenerTest extends BaseEventListenerTe
     @SpyBean
     SaveIntegrationPaymentCommandModelFactory saveIntegrationPaymentCommandModelFactorySpy;
     @SpyBean
-    SaveIntegrationPaymentCommandModelFactory saveIntegrationPaymentCommandModelFactory;
+    SaveOnIntegrationErrorCommandModelFactory saveOnIntegrationErrorCommandModelFactory;
     @MockBean
     InsertAwardWinnerCommand insertAwardWinnerCommand;
     @MockBean
-    SavePaymentInfoOnErrorCommand savePaymentInfoOnErrorCommandMock;
+    SavePaymentIntegrationOnErrorCommand savePaymentIntegrationOnErrorCommand;
 
     @Value("${listeners.eventConfigurations.items.OnIntegrationPaymentRequestListener.topic}")
     private String topic;
@@ -56,11 +58,11 @@ public class OnIntegrationPaymentRequestListenerTest extends BaseEventListenerTe
         Mockito.reset(
                 onIntegrationPaymentRequestListenerSpy,
                 saveIntegrationPaymentCommandModelFactorySpy,
-                saveIntegrationPaymentCommandModelFactory,
+                saveOnIntegrationErrorCommandModelFactory,
                 insertAwardWinnerCommand,
-                savePaymentInfoOnErrorCommandMock);
+                savePaymentIntegrationOnErrorCommand);
         Mockito.doReturn(true).when(insertAwardWinnerCommand).execute();
-        Mockito.doReturn(true).when(savePaymentInfoOnErrorCommandMock).execute();
+        Mockito.doReturn(true).when(savePaymentIntegrationOnErrorCommand).execute();
 
     }
 

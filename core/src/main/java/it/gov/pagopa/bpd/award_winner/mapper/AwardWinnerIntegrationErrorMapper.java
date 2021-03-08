@@ -12,6 +12,7 @@ import org.apache.kafka.common.header.Header;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -44,7 +45,7 @@ public class AwardWinnerIntegrationErrorMapper {
             Header header = awardWinnerErrorCommandModel.getHeaders().lastHeader(
                     ListenerHeaders.INTEGRATION_HEADER);
             if (header != null && header.value() != null) {
-                awardWinnerError.setIntegrationHeader(header.key());
+                awardWinnerError.setIntegrationHeader(Arrays.toString(header.value()));
             }
         }
 
