@@ -60,7 +60,7 @@ class InsertAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Inser
         try {
 
             if (logger.isDebugEnabled()) {
-                logger.debug("Saving info payment for awardWinner: " +
+                logger.debug("Saving integration payment for awardWinner: " +
                         paymentIntegrationAwardWinner.getIdConsap());
             }
 
@@ -69,7 +69,7 @@ class InsertAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Inser
             awardWinnerService.insertIntegrationAwardWinner(awardWinner);
 
             if (logger.isDebugEnabled()) {
-                logger.debug("Saved info payment for awardWinner: " +
+                logger.debug("Saved integration payment for awardWinner: " +
                         paymentIntegrationAwardWinner.getIdConsap());
             }
 
