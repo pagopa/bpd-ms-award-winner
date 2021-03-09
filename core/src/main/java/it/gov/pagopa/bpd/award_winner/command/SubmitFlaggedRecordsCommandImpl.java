@@ -8,7 +8,6 @@ import it.gov.pagopa.bpd.award_winner.integration.event.model.PaymentInfo;
 import it.gov.pagopa.bpd.award_winner.integration.event.model.PaymentIntegration;
 import it.gov.pagopa.bpd.award_winner.mapper.ResubmitAwardWinnerMapper;
 import it.gov.pagopa.bpd.award_winner.mapper.ResubmitIntegrationAwardWinnerMapper;
-import it.gov.pagopa.bpd.award_winner.model.PaymentIntegrationAwardWinner;
 import it.gov.pagopa.bpd.award_winner.model.constants.AwardWinnerErrorConstants;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerErrorService;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerIntegrationPublisherService;
@@ -81,7 +80,7 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
 
 
                 if (awardWinnerError.getIntegrationHeader() == null ||
-                        awardWinnerError.getIntegrationHeader().equals("true")) {
+                        !awardWinnerError.getIntegrationHeader().equals("true")) {
 
                     PaymentInfo paymentInfoAwardWinner = resubmitAwardWinnerMapper.map(awardWinnerError);
 
@@ -162,6 +161,12 @@ class SubmitFlaggedRecordsCommandImpl extends BaseCommand<Boolean> implements Su
     public void setAwardWinnerPublisherService(
             AwardWinnerPublisherService awardWinnerPublisherService) {
         this.awardWinnerPublisherService = awardWinnerPublisherService;
+    }
+
+    @Autowired
+    public void setAwardWinnerIntegrationPublisherService(
+            AwardWinnerIntegrationPublisherService awardWinnerIntegrationPublisherService) {
+        this.awardWinnerIntegrationPublisherService = awardWinnerIntegrationPublisherService;
     }
 
 

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 @Slf4j
-class SavePaymentIntegrationOnErrorCommandImpl extends BaseCommand<Boolean> implements SavePaymentInfoOnErrorCommand {
+class SavePaymentIntegrationOnErrorCommandImpl extends BaseCommand<Boolean> implements SavePaymentIntegrationOnErrorCommand {
 
 
     private AwardWinnerIntegrationErrorCommandModel awardWinnerIntegrationErrorCommandModel;

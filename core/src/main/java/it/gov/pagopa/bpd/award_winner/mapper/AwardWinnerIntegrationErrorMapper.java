@@ -42,11 +42,10 @@ public class AwardWinnerIntegrationErrorMapper {
                     requestIdHeader == null ? null : new String(requestIdHeader.value()));
             awardWinnerError.setRecordId(UUID.randomUUID().toString());
             awardWinnerError.setToResubmit(false);
-            Header header = awardWinnerErrorCommandModel.getHeaders().lastHeader(
+            Header integrationHeader = awardWinnerErrorCommandModel.getHeaders().lastHeader(
                     ListenerHeaders.INTEGRATION_HEADER);
-            if (header != null && header.value() != null) {
-                awardWinnerError.setIntegrationHeader(Arrays.toString(header.value()));
-            }
+            awardWinnerError.setIntegrationHeader(integrationHeader == null ? null :
+                    new String (integrationHeader.value()));
         }
 
         return awardWinnerError;
