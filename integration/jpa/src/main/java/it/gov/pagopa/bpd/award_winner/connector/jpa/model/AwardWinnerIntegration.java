@@ -2,7 +2,6 @@ package it.gov.pagopa.bpd.award_winner.connector.jpa.model;
 
 import it.gov.pagopa.bpd.common.connector.jpa.model.BaseEntity;
 import lombok.*;
-import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,10 +15,12 @@ import java.time.LocalDate;
 @Builder
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Table(name = "bpd_award_winner")
-public class AwardWinner extends BaseEntity implements Serializable {
+public class AwardWinnerIntegration extends BaseEntity implements Serializable {
 
     @Id
     @Column(name = "id_n")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bpd_award_bpd_ward_id_seq")
+    @SequenceGenerator(name = "bpd_award_bpd_ward_id_seq", sequenceName = "bpd_award_bpd_ward_id_seq")
     Long id;
 
     @Column(name = "cashback_n")

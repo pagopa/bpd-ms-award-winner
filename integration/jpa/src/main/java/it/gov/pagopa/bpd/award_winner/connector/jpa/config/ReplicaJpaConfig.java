@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -21,41 +24,42 @@ import java.util.Objects;
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:config/jpaConnectionConfig.properties")
+@PropertySource("classpath:config/replicaJpaConnectionConfig.properties")
 @EnableJpaRepositories(
         repositoryBaseClass = CustomJpaRepository.class,
         basePackages = {"it.gov.pagopa.bpd.award_winner.connector.jpa"},
-        excludeFilters = @ComponentScan.Filter(ReadOnlyRepository.class),
-        includeFilters = @ComponentScan.Filter(Repository.class),
-        entityManagerFactoryRef = "entityManagerFactory",
-        transactionManagerRef = "transactionManager"
+        excludeFilters = @ComponentScan.Filter(Repository.class),
+        includeFilters = @ComponentScan.Filter(ReadOnlyRepository.class),
+        entityManagerFactoryRef = "readEntityManagerFactory",
+        transactionManagerRef = "readTransactionManager"
 )
-public class JpaConfig /* extends BaseJpaConfig */ {
-    @Value("${spring.jpa.database-platform}")
+public class ReplicaJpaConfig /* extends BaseJpaConfig */{
+
+    @Value("${spring.replica.jpa.database-platform}")
     private String hibernateDialect;
 
-    @Value("${spring.jpa.show-sql}")
+    @Value("${spring.replica.jpa.show-sql}")
     private boolean showSql;
 
-    @Value("${spring.jpa.hibernate.ddl-auto}")
+    @Value("${spring.replica.jpa.hibernate.ddl-auto}")
     private String hibernateDdlAuto;
 
-    @Bean(name = {"dataSource"})
-    @Primary
-    @ConfigurationProperties(prefix = "spring.datasource.hikari")
-    public DataSource dataSource() {
-        return dataSourceProperties().initializeDataSourceBuilder().build();
+    @Bean(name = {"readDataSource"})
+    @ConfigurationProperties(prefix = "spring.replica.datasource.hikari")
+    public DataSource readDataSource() {
+        return readDataSourceProperties().initializeDataSourceBuilder().build();
     }
-    @Bean(name = {"dataSourceProperties"})
-    @Primary
-    @ConfigurationProperties("spring.datasource")
-    public DataSourceProperties dataSourceProperties() {
+    @Bean(name = {"readDataSourceProperties"})
+    @ConfigurationProperties("spring.replica.datasource")
+    public DataSourceProperties readDataSourceProperties() {
         return new DataSourceProperties();
     }
 
-    @Bean(name = {"entityManagerFactory"})
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-            @Qualifier("dataSource") DataSource datasource
+    @Bean(
+            name = {"readEntityManagerFactory"}
+    )
+    public LocalContainerEntityManagerFactoryBean readEntityManagerFactory(
+            @Qualifier("readDataSource") DataSource datasource
     ){
         Properties jpaProperties = new Properties();
 
@@ -63,8 +67,8 @@ public class JpaConfig /* extends BaseJpaConfig */ {
         jpaProperties.put("hibernate.dialect", this.hibernateDialect);
         jpaProperties.put("hibernate.show_sql", this.showSql);
         jpaProperties.put("hibernate.jdbc.batch_size", 5);
-        jpaProperties.put("hibernate.order_inserts", Boolean.TRUE);
-        jpaProperties.put("hibernate.order_updates", Boolean.TRUE);
+        jpaProperties.put("hibernate.order_inserts", Boolean.FALSE);
+        jpaProperties.put("hibernate.order_updates", Boolean.FALSE);
         jpaProperties.put("hibernate.jdbc.batch_versioned_data", Boolean.FALSE);
         jpaProperties.put("hibernate.id.new_generator_mappings", Boolean.FALSE);
         jpaProperties.put("hibernate.jdbc.lob.non_contextual_creation",
@@ -91,8 +95,10 @@ public class JpaConfig /* extends BaseJpaConfig */ {
         return entityManagerFactoryBean;
     }
 
-    @Bean(name = {"transactionManager"})
-    public PlatformTransactionManager transactionManager() throws Exception {
-        return new JpaTransactionManager(this.entityManagerFactory(this.dataSource()).getObject());
+    @Bean(
+            name = {"readTransactionManager"}
+    )
+    public PlatformTransactionManager readTransactionManager() throws Exception {
+        return new JpaTransactionManager(this.readEntityManagerFactory(this.readDataSource()).getObject());
     }
 }
