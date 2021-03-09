@@ -76,11 +76,11 @@ public class OnIntegrationPaymentRequestListener extends BaseConsumerAwareEventL
                             "true".getBytes())) {
 
                 if (!command.execute()) {
-                    throw new Exception("Failed to execute UpdateAwardWinnerCommand");
+                    throw new Exception("Failed to execute InsertAwardWinnerCommand");
                 }
 
                 if (log.isDebugEnabled()) {
-                    log.debug("UpdateAwardWinnerCommand successfully executed for inbound message");
+                    log.debug("InsertAwardWinnerCommand successfully executed for inbound message");
                 }
 
             }
@@ -122,7 +122,7 @@ public class OnIntegrationPaymentRequestListener extends BaseConsumerAwareEventL
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("SavePaymentInfoOnErrorCommand successfully executed for inbound message");
+                log.debug("SavePaymentIntegrationOnErrorCommand successfully executed for inbound message");
             }
 
         }
