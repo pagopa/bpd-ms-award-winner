@@ -87,14 +87,14 @@ public class AwardWinner extends BaseEntity implements Serializable {
     @Column(name = "data_esecuzione_t")
     LocalDate executionDate;
 
-    @Column(name = "pagopa_id_n")
-    Long pagopaId;
+    @Column(name = "related_id_n")
+    Long relatedId;
 
     @Column(name = "consap_id_n")
     Long consapId;
 
-    @Column(name = "complaint_id_n")
-    Long complaintId;
+    @Column(name = "ticket_id_n")
+    Long ticketId;
 
 }
 

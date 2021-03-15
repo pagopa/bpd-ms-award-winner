@@ -34,9 +34,9 @@ public class IntegrationAwardWinnerMapper {
             awardWinner = AwardWinnerIntegration.builder().build();
             awardWinner.setConsapId(Long.valueOf(paymentIntegrationAwardWinner.getIdConsap().trim()
                     .replaceAll("[\uFEFF-\uFFFF]", "")));
-            awardWinner.setPagopaId(Long.valueOf(paymentIntegrationAwardWinner.getIdPagoPa().trim()
+            awardWinner.setRelatedId(Long.valueOf(paymentIntegrationAwardWinner.getIdPagoPa().trim()
                     .replaceAll("[\uFEFF-\uFFFF]", "")));
-            awardWinner.setComplaintId(Long.valueOf(paymentIntegrationAwardWinner.getIdComplaint().trim()
+            awardWinner.setTicketId(Long.valueOf(paymentIntegrationAwardWinner.getIdComplaint().trim()
                     .replaceAll("[\uFEFF-\uFFFF]", "")));
 
             awardWinner.setFiscalCode(paymentIntegrationAwardWinner.getFiscalCode());

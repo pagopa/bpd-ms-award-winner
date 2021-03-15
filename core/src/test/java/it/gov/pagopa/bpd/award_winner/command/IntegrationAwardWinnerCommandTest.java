@@ -102,8 +102,8 @@ public class IntegrationAwardWinnerCommandTest extends BaseTest {
     protected AwardWinnerIntegration getSavedModel() {
         return AwardWinnerIntegration.builder()
                 .consapId(Long.valueOf("000000001"))
-                .pagopaId(Long.valueOf("000000001"))
-                .complaintId(Long.valueOf("000000001"))
+                .relatedId(Long.valueOf("000000001"))
+                .ticketId(Long.valueOf("000000001"))
                 .awardPeriodId(Long.valueOf("1"))
                 .awardPeriodStart(LocalDate.parse("01/01/2021", dtf))
                 .awardPeriodEnd(LocalDate.parse("01/06/2021", dtf))
