@@ -4,12 +4,12 @@
     <parent>
         <artifactId>bpd-ms-award-winner</artifactId>
         <groupId>it.gov.pagopa.bpd.ms</groupId>
-        <version>1.1.0-SNAPSHOT</version>
+        <version>1.1.0-rc3</version>
     </parent>
 
     <groupId>it.gov.pagopa.bpd.ms.award_winner</groupId>
     <artifactId>bpd-ms-award-winner-core</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0-rc3</version>
 
     <dependencies>
         <dependency>
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>it.gov.pagopa.bpd.ms.award_winner.integration</groupId>
             <artifactId>bpd-ms-award-winner-integration-event</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
+            <version>1.1.0-rc3</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
