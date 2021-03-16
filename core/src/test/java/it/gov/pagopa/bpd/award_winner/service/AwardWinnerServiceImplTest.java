@@ -2,6 +2,8 @@ package it.gov.pagopa.bpd.award_winner.service;
 
 import eu.sia.meda.BaseTest;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerDAO;
+import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerIntegrationDAO;
+import it.gov.pagopa.bpd.award_winner.connector.jpa.CitizenReplicaDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,10 +24,14 @@ import java.util.Optional;
 @ContextConfiguration(classes = AwardWinnerServiceImpl.class)
 public class AwardWinnerServiceImplTest extends BaseTest {
 
-
-
     @MockBean
     private AwardWinnerDAO awardWinnerDAOMock;
+
+    @MockBean
+    private AwardWinnerIntegrationDAO awardWinnerIntegrationDAOMock;
+
+    @MockBean
+    private CitizenReplicaDAO citizenReplicaDAOMock;
 
     @Autowired
     private AwardWinnerService awardWinnerService;
@@ -37,7 +43,8 @@ public class AwardWinnerServiceImplTest extends BaseTest {
     @Before
     public void initTest() {
         Mockito.reset(awardWinnerDAOMock);
-        awardWinnerService = new AwardWinnerServiceImpl(awardWinnerDAOMock);
+        awardWinnerService = new AwardWinnerServiceImpl(
+                awardWinnerDAOMock,awardWinnerIntegrationDAOMock,citizenReplicaDAOMock);
     }
 
     @Test

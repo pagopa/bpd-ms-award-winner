@@ -9,5 +9,5 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource("classpath:config/infoPaymentRequestListener.properties")
-public class EventRequestConfig {
+public class InfoEventRequestConfig {
 }
