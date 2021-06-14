@@ -41,12 +41,16 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
             throw new Exception("Id not found");
         }
 
-        storedAwardWinner.get().setResult(awardWinner.getResult());
-        storedAwardWinner.get().setResultReason(awardWinner.getResultReason());
-        storedAwardWinner.get().setCro(awardWinner.getCro());
-        storedAwardWinner.get().setExecutionDate(awardWinner.getExecutionDate());
+        AwardWinner found = storedAwardWinner.get();
 
-        return awardWinnerDAO.update(storedAwardWinner.get());
+        found.setResult(awardWinner.getResult());
+        found.setResultReason(awardWinner.getResultReason());
+        found.setCro(awardWinner.getCro());
+        found.setExecutionDate(awardWinner.getExecutionDate());
+        found.setToNotify(Boolean.TRUE);
+        found.setNotifyTimes(0L);
+
+        return awardWinnerDAO.update(found);
     }
 
     @Override
