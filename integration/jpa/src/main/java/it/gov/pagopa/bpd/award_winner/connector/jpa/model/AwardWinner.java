@@ -87,8 +87,14 @@ public class AwardWinner extends BaseEntity implements Serializable {
     @Column(name = "data_esecuzione_t")
     LocalDate executionDate;
 
+    @Column(name = "to_notify_b")
+    private Boolean toNotify;
+
     @Column(name = "related_id_n")
     Long relatedId;
+
+    @Column(name = "notify_times_n")
+    private Long notifyTimes;
 
     @Column(name = "consap_id_n")
     Long consapId;
