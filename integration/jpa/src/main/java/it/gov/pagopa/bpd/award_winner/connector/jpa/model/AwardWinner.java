@@ -85,6 +85,18 @@ public class AwardWinner extends BaseEntity {
     @Column(name = "data_esecuzione_t")
     LocalDate executionDate;
 
+    @Column(name = "consap_id_n")
+    Long consapId;
+
+    @Column(name = "ticket_id_n")
+    Long ticketId;
+
+    @Column(name = "related_id_n")
+    Long relatedPaymentId;
+
+    @Column(name = "issuer_card_id_s")
+    String issuerCardId;
+
 
 
 }
