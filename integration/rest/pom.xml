@@ -8,22 +8,18 @@
     </parent>
 
     <groupId>it.gov.pagopa.bpd.ms.award_winner.integration</groupId>
-    <artifactId>bpd-ms-award-winner-integration-event</artifactId>
+    <artifactId>bpd-ms-award-winner-integration-rest</artifactId>
     <version>cst_115_rc1</version>
+
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka-test</artifactId>
-            <scope>test</scope>
+            <groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+            <artifactId>bpd-commons-integration-rest</artifactId>
         </dependency>
         <dependency>
-            <groupId>eu.sia.meda</groupId>
-            <artifactId>meda-arch-event</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>eu.sia.meda</groupId>
-            <artifactId>meda-arch-event</artifactId>
+            <groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+            <artifactId>bpd-commons-integration-rest</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>

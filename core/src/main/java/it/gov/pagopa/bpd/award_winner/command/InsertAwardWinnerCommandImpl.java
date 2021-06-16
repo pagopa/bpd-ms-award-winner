@@ -9,6 +9,7 @@ import it.gov.pagopa.bpd.award_winner.model.AwardWinnerCommandModel;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerIntegrationCommandModel;
 import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
 import it.gov.pagopa.bpd.award_winner.model.PaymentIntegrationAwardWinner;
+import it.gov.pagopa.bpd.award_winner.service.AwardPeriodConnectorService;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ class InsertAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Inser
 
     private AwardWinnerIntegrationCommandModel awardWinnerIntegrationCommandModel;
     private AwardWinnerService awardWinnerService;
+    private AwardPeriodConnectorService awardPeriodConnectorService;
     private IntegrationAwardWinnerMapper awardWinnerMapper;
 
 
@@ -45,10 +47,12 @@ class InsertAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Inser
     public InsertAwardWinnerCommandImpl(
             AwardWinnerIntegrationCommandModel awardWinnerIntegrationCommandModel,
             AwardWinnerService awardWinnerService,
+            AwardPeriodConnectorService awardPeriodConnectorService,
             IntegrationAwardWinnerMapper awardWinnerMapper) {
         this.awardWinnerIntegrationCommandModel = awardWinnerIntegrationCommandModel;
         this.awardWinnerService = awardWinnerService;
         this.awardWinnerMapper = awardWinnerMapper;
+        this.awardPeriodConnectorService = awardPeriodConnectorService;
     }
 
     @SneakyThrows
@@ -66,6 +70,10 @@ class InsertAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Inser
 
             validateRequest(paymentIntegrationAwardWinner);
             AwardWinnerIntegration awardWinner = awardWinnerMapper.map(paymentIntegrationAwardWinner);
+
+            awardWinner.setAwardPeriodId(awardPeriodConnectorService.findAwardPeriodId(
+                    awardWinner.getAwardPeriodStart(),awardWinner.getAwardPeriodEnd()));
+
             awardWinnerService.insertIntegrationAwardWinner(awardWinner);
 
             if (logger.isDebugEnabled()) {
@@ -97,6 +105,11 @@ class InsertAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Inser
     @Autowired
     public void setAwardWinnerService(AwardWinnerService awardWinnerService) {
         this.awardWinnerService = awardWinnerService;
+    }
+
+    @Autowired
+    public void setAwardPeriodConnectorService(AwardPeriodConnectorService awardPeriodConnectorService) {
+        this.awardPeriodConnectorService = awardPeriodConnectorService;
     }
 
     @Autowired

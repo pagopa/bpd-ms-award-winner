@@ -40,11 +40,9 @@ public class IntegrationAwardWinnerMapper {
                     .replaceAll("[\uFEFF-\uFFFF]", "")));
 
             awardWinner.setFiscalCode(paymentIntegrationAwardWinner.getFiscalCode());
-            awardWinner.setTechnicalAccountHolder(paymentIntegrationAwardWinner.getTechnicalCountProperty());
             awardWinner.setAccountHolderFiscalCode(paymentIntegrationAwardWinner.getFiscalCode());
             awardWinner.setAccountHolderName(paymentIntegrationAwardWinner.getName());
             awardWinner.setAccountHolderSurname(paymentIntegrationAwardWinner.getSurname());
-            awardWinner.setAwardPeriodId(Long.valueOf(paymentIntegrationAwardWinner.getAwardPeriodId()));
             awardWinner.setResult(paymentIntegrationAwardWinner.getResult());
             awardWinner.setResultReason(paymentIntegrationAwardWinner.getResultReason());
             awardWinner.setPayoffInstr(paymentIntegrationAwardWinner.getIban());
@@ -55,6 +53,8 @@ public class IntegrationAwardWinnerMapper {
             OffsetDateTime executionDate = OffsetDateTime.now();
             awardWinner.setInsertDate(executionDate);
             awardWinner.setUpdateDate(executionDate);
+            awardWinner.setAmount(paymentIntegrationAwardWinner.getAmount());
+            awardWinner.setJackpot(paymentIntegrationAwardWinner.getJackpotAmount());
 
             if (paymentIntegrationAwardWinner.getExecutionDate() != null
                     && !paymentIntegrationAwardWinner.getExecutionDate().isEmpty()) {

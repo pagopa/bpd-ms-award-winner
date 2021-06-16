@@ -1,0 +1,23 @@
+package it.gov.pagopa.bpd.award_winner.connector.award_period;
+
+import it.gov.pagopa.bpd.award_winner.connector.award_period.model.AwardPeriod;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
+
+/**
+ * AwardPeriod Rest Client
+ */
+@FeignClient(name = "${rest-client.award-period.serviceCode}", url = "${rest-client.award-period.base-url}")
+public interface AwardPeriodRestClient {
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    @Cacheable(value = "awardPeriods", key = "#root.method.name")
+    List<AwardPeriod> getAwardPeriods();
+
+}

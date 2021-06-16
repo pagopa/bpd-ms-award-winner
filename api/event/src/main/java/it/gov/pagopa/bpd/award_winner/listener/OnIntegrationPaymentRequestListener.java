@@ -118,11 +118,11 @@ public class OnIntegrationPaymentRequestListener extends BaseConsumerAwareEventL
                     SavePaymentIntegrationOnErrorCommand.class, awardWinnerErrorCommandModel);
 
             if (!errorCommand.execute()) {
-                throw new Exception("Failed to execute SavePaymentInfoOnErrorCommand");
+                throw new Exception("Failed to execute SavePaymentIntegrationOnErrorCommand");
             }
 
             if (log.isDebugEnabled()) {
-                log.debug("SavePaymentIntegrationOnErrorCommand successfully executed for inbound message");
+                log.debug("InsertAwardWinnerCommand successfully executed for inbound message");
             }
 
         }

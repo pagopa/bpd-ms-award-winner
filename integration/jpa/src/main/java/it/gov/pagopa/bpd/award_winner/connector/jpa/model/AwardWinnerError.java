@@ -56,6 +56,12 @@ public class AwardWinnerError extends BaseEntity {
     @Column(name = "surname_s")
     String surname;
 
+    @Column(name = "amount_n")
+    BigDecimal amount;
+
+    @Column(name = "jackpot_amount_n")
+    BigDecimal jackpotAmount;
+
     @Column(name = "cashback_amount_n")
     BigDecimal cashbackAmount;
 
