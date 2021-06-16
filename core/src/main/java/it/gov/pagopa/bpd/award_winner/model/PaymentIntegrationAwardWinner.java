@@ -50,6 +50,12 @@ public class PaymentIntegrationAwardWinner {
     @NotNull
     BigDecimal cashbackAmount;
 
+    @NotNull
+    BigDecimal amount;
+
+    @NotNull
+    BigDecimal jackpotAmount;
+
     @NotBlank
     @NotNull
     @Size(max = 140)
@@ -63,11 +69,6 @@ public class PaymentIntegrationAwardWinner {
 
     @NotNull
     @NotBlank
-    @Size(max = 2)
-    String awardPeriodId;
-
-    @NotNull
-    @NotBlank
     @Size(max = 25)
     String result;
 
@@ -77,8 +78,5 @@ public class PaymentIntegrationAwardWinner {
     String cro;
 
     String executionDate;
-
-    @Size(max = 50)
-    String technicalCountProperty;
 
 }

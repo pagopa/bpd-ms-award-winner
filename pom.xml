@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>bpd-ms-award-winner</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>cst_115_rc1</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -21,22 +21,32 @@
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_winner.integration</groupId>
                 <artifactId>bpd-ms-award-winner-integration-jpa</artifactId>
-                <version>1.1.0-SNAPSHOT</version>
+                <version>cst_115_rc1</version>
+            </dependency>
+            <dependency>
+                <groupId>it.gov.pagopa.bpd.ms.award_winner.integration</groupId>
+                <artifactId>bpd-ms-award-winner-integration-event</artifactId>
+                <version>cst_115_rc1</version>
+            </dependency>
+            <dependency>
+                <groupId>it.gov.pagopa.bpd.ms.award_winner.integration</groupId>
+                <artifactId>bpd-ms-award-winner-integration-rest</artifactId>
+                <version>cst_115_rc1</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_winner</groupId>
                 <artifactId>bpd-ms-award-winner-core</artifactId>
-                <version>1.1.0-SNAPSHOT</version>
+                <version>cst_115_rc1</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_winner.api</groupId>
                 <artifactId>bpd-ms-award-winner-api-rest</artifactId>
-                <version>1.1.0-SNAPSHOT</version>
+                <version>cst_115_rc1</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_winner.api</groupId>
                 <artifactId>bpd-ms-award-winner-api-event</artifactId>
-                <version>1.1.0-SNAPSHOT</version>
+                <version>cst_115_rc1</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.commons.api</groupId>
@@ -62,6 +72,17 @@
             <dependency>
                 <groupId>it.gov.pagopa.bpd.commons.integration</groupId>
                 <artifactId>bpd-commons-integration-jpa</artifactId>
+                <version>${bpd-commons.version}</version>
+                <type>test-jar</type>
+            </dependency>
+            <dependency>
+                <groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+                <artifactId>bpd-commons-integration-rest</artifactId>
+                <version>${bpd-commons.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.gov.pagopa.bpd.commons.integration</groupId>
+                <artifactId>bpd-commons-integration-rest</artifactId>
                 <version>${bpd-commons.version}</version>
                 <type>test-jar</type>
             </dependency>
