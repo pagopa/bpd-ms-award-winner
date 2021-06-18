@@ -3,6 +3,8 @@ package it.gov.pagopa.bpd.award_winner.service;
 import eu.sia.meda.service.BaseService;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
+import it.gov.pagopa.bpd.award_winner.mapper.AwardWinnerMapper;
+import it.gov.pagopa.bpd.award_winner.mapper.IntegratedPaymentMapper;
 import it.gov.pagopa.bpd.award_winner.model.IntegratedPayment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,12 @@ public class IntegratedPaymentServiceImpl extends BaseService implements Integra
 
 
     private final AwardWinnerDAO awardWinnerDAO;
+    private  final IntegratedPaymentMapper integratedPaymentMapper;
 
     @Autowired
-    public IntegratedPaymentServiceImpl(AwardWinnerDAO awardWinnerDAO) {
+    public IntegratedPaymentServiceImpl(AwardWinnerDAO awardWinnerDAO, IntegratedPaymentMapper integratedPaymentMapper) {
         this.awardWinnerDAO = awardWinnerDAO;
+        this.integratedPaymentMapper = integratedPaymentMapper;
     }
 
 
@@ -36,11 +40,16 @@ public class IntegratedPaymentServiceImpl extends BaseService implements Integra
             throw new Exception("Related payment Id not found");
         }
 
-        storedAwardWinner.get().setAmount(integratedPayment.getAmount());
-        storedAwardWinner.get().setCashback(integratedPayment.getCashbackAmount());
-        storedAwardWinner.get().setJackpot(integratedPayment.getJackpotAmount());
+        AwardWinner awardWinner = integratedPaymentMapper.map(storedAwardWinner);
+        Long id = awardWinnerDAO.getId() + 1;
 
-        return awardWinnerDAO.save(storedAwardWinner.get());
+
+        awardWinner.setAmount(integratedPayment.getAmount());
+        awardWinner.setCashback(integratedPayment.getCashbackAmount());
+        awardWinner.setJackpot(integratedPayment.getJackpotAmount());
+        awardWinner.setId(id);
+
+        return awardWinnerDAO.save(awardWinner);
     }
 
 }

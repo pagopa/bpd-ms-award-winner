@@ -3,8 +3,8 @@ package it.gov.pagopa.bpd.award_winner.listener.factory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.gov.pagopa.bpd.award_winner.model.IntegratedPayment;
 import it.gov.pagopa.bpd.award_winner.model.IntegratedPaymentCommandModel;
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.tuple.Pair;
+import lombok.SneakyThrows;
 import org.apache.kafka.common.header.Headers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,13 +18,13 @@ import java.nio.charset.StandardCharsets;
  */
 
 @Component
-class SaveIntegrationPaymentCommandModelFactory implements
+public class SaveIntegratedPaymentCommandModelFactory implements
         ModelFactory<Pair<byte[], Headers>, IntegratedPaymentCommandModel> {
 
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public SaveIntegrationPaymentCommandModelFactory(ObjectMapper objectMapper) {
+    public SaveIntegratedPaymentCommandModelFactory(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
@@ -60,4 +60,5 @@ class SaveIntegrationPaymentCommandModelFactory implements
                     String.format("Cannot parse the payload as a valid %s", IntegratedPayment.class), e);
         }
     }
+
 }

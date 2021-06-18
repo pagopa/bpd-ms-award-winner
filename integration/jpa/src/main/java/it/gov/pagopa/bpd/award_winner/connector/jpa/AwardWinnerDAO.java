@@ -207,13 +207,19 @@ public interface AwardWinnerDAO extends CrudJpaDAO<AwardWinner, Long> {
     void checkAndUpdateUnprocessedPayment();
 
 
-    @Query("select baw from AwardWinner baw " +
+    @Query(
+            "select baw from AwardWinner baw " +
             "where baw.fiscalCode = :fiscalCode " +
             "and baw.ticketId = :ticketId " +
+            "and baw.relatedPaymentId = :relatedPaymentId " +
             "and baw.relatedPaymentId = :relatedPaymentId "
     )
     AwardWinner getAwardWinner(@Param("fiscalCode") String fiscalCode,
-                               @Param("ticketId") String ticketId,
-                               @Param("relatedPaymentId") String relatedPaymentId);
+                               @Param("ticketId") Long ticketId,
+                               @Param("relatedPaymentId") Long relatedPaymentId);
+
+    @Query(nativeQuery=true,
+            value="select max(id_n) from bpd_citizen.bpd_award_winner baw")
+    Long getId();
 
 }

@@ -19,17 +19,11 @@ public class IntegratedPayment {
     @NotBlank
     String fiscalCode;
 
-    @NotNull
-    @NotBlank
-    String iban;
-
-    @NotNull
-    @NotBlank
     Long awardPeriodId;
 
-    String ticketId;
+    Long ticketId;
 
-    String relatedPaymentId;
+    Long relatedPaymentId;
 
     BigDecimal amount;
 

@@ -70,7 +70,7 @@ public class AwardWinner extends BaseEntity {
     Status status;
 
     public enum Status {
-        NEW, SENT, RECOVERY
+        NEW, SENT, RECOVERY, INTEGRATION
     }
 
     @Column(name = "esito_bonifico_s")
