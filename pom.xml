@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>bpd-ms-award-winner</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -21,22 +21,22 @@
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_winner.integration</groupId>
                 <artifactId>bpd-ms-award-winner-integration-jpa</artifactId>
-                <version>1.0.0</version>
+                <version>1.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_winner</groupId>
                 <artifactId>bpd-ms-award-winner-core</artifactId>
-                <version>1.0.0</version>
+                <version>1.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_winner.api</groupId>
                 <artifactId>bpd-ms-award-winner-api-rest</artifactId>
-                <version>1.0.0</version>
+                <version>1.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.ms.award_winner.api</groupId>
                 <artifactId>bpd-ms-award-winner-api-event</artifactId>
-                <version>1.0.0</version>
+                <version>1.1.0</version>
             </dependency>
             <dependency>
                 <groupId>it.gov.pagopa.bpd.commons.api</groupId>
