@@ -2,12 +2,8 @@ package it.gov.pagopa.bpd.award_winner.command;
 
 import eu.sia.meda.core.command.BaseCommand;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
-import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerIntegration;
-import it.gov.pagopa.bpd.award_winner.mapper.AwardWinnerMapper;
 import it.gov.pagopa.bpd.award_winner.mapper.IntegrationAwardWinnerMapper;
-import it.gov.pagopa.bpd.award_winner.model.AwardWinnerCommandModel;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerIntegrationCommandModel;
-import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
 import it.gov.pagopa.bpd.award_winner.model.PaymentIntegrationAwardWinner;
 import it.gov.pagopa.bpd.award_winner.service.AwardPeriodConnectorService;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerService;
@@ -69,7 +65,7 @@ class InsertAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Inser
             }
 
             validateRequest(paymentIntegrationAwardWinner);
-            AwardWinnerIntegration awardWinner = awardWinnerMapper.map(paymentIntegrationAwardWinner);
+            AwardWinner awardWinner = awardWinnerMapper.map(paymentIntegrationAwardWinner);
 
             awardWinner.setAwardPeriodId(awardPeriodConnectorService.findAwardPeriodId(
                     awardWinner.getAwardPeriodStart(),awardWinner.getAwardPeriodEnd()));

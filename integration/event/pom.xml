@@ -4,12 +4,12 @@
     <parent>
         <groupId>it.gov.pagopa.bpd.ms.award_winner</groupId>
         <artifactId>bpd-ms-award-winner-integration</artifactId>
-        <version>cst_115_rc1</version>
+        <version>cst_115_rc2</version>
     </parent>
 
     <groupId>it.gov.pagopa.bpd.ms.award_winner.integration</groupId>
     <artifactId>bpd-ms-award-winner-integration-event</artifactId>
-    <version>cst_115_rc1</version>
+    <version>cst_115_rc2</version>
 
     <dependencies>
         <dependency>

@@ -2,14 +2,13 @@ package it.gov.pagopa.bpd.award_winner.service;
 
 import eu.sia.meda.service.BaseService;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerDAO;
-import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerIntegrationDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.CitizenReplicaDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
-import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerIntegration;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.Citizen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,16 +18,13 @@ import java.util.Optional;
 class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
 
     private final AwardWinnerDAO awardWinnerDAO;
-    private final AwardWinnerIntegrationDAO awardWinnerIntegrationDAO;
     private final CitizenReplicaDAO citizenReplicaDAO;
 
 
     @Autowired
     public AwardWinnerServiceImpl(AwardWinnerDAO awardWinnerDAO,
-                                  AwardWinnerIntegrationDAO awardWinnerIntegrationDAO,
                                   CitizenReplicaDAO citizenReplicaDAO) {
         this.awardWinnerDAO = awardWinnerDAO;
-        this.awardWinnerIntegrationDAO = awardWinnerIntegrationDAO;
         this.citizenReplicaDAO = citizenReplicaDAO;
     }
 
@@ -50,7 +46,7 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
     }
 
     @Override
-    public AwardWinnerIntegration insertIntegrationAwardWinner(AwardWinnerIntegration awardWinner) throws Exception {
+    public AwardWinner insertIntegrationAwardWinner(AwardWinner awardWinner) throws Exception {
 
         Optional<Citizen> citizen = citizenReplicaDAO.findById(awardWinner.getFiscalCode());
 
@@ -58,7 +54,20 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
             throw new Exception("Citizen not found");
         }
 
-        return awardWinnerIntegrationDAO.update(awardWinner);
+        List<AwardWinner> awardWinnerList = awardWinnerDAO
+                .findByConsapIdAndRelatedIdAndTicketIdAndStatus(
+                        awardWinner.getConsapId(),
+                        awardWinner.getRelatedId(),
+                        awardWinner.getTicketId(),
+                        awardWinner.getStatus()
+        );
+
+        if (!awardWinnerList.isEmpty()) {
+            throw new Exception("Existing integration payment with equal ids");
+        }
+
+        return awardWinnerDAO.update(awardWinner);
+
     }
 
 }

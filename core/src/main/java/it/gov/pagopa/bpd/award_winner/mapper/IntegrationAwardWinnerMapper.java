@@ -1,14 +1,10 @@
 package it.gov.pagopa.bpd.award_winner.mapper;
 
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
-import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerIntegration;
 import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
 import it.gov.pagopa.bpd.award_winner.model.PaymentIntegrationAwardWinner;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,14 +20,14 @@ public class IntegrationAwardWinnerMapper {
      * @param paymentIntegrationAwardWinner instance of an  {@link PaymentIntegrationAwardWinner}, to be mapped into a {@link AwardWinner}
      * @return {@link AwardWinner} instance from the input paymentIntegrationAwardWinner,
      */
-    public AwardWinnerIntegration map(
+    public AwardWinner map(
             PaymentIntegrationAwardWinner paymentIntegrationAwardWinner) {
 
-        AwardWinnerIntegration awardWinner = null;
+        AwardWinner awardWinner = null;
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         if (paymentIntegrationAwardWinner != null) {
-            awardWinner = AwardWinnerIntegration.builder().build();
+            awardWinner = AwardWinner.builder().build();
             awardWinner.setConsapId(Long.valueOf(paymentIntegrationAwardWinner.getIdConsap().trim()
                     .replaceAll("[\uFEFF-\uFFFF]", "")));
             awardWinner.setRelatedId(Long.valueOf(paymentIntegrationAwardWinner.getIdPagoPa().trim()
@@ -49,7 +45,7 @@ public class IntegrationAwardWinnerMapper {
             awardWinner.setCro(paymentIntegrationAwardWinner.getCro());
             awardWinner.setCashback(paymentIntegrationAwardWinner.getCashbackAmount());
             awardWinner.setEnabled(true);
-            awardWinner.setStatus(AwardWinnerIntegration.Status.INTEGRATION);
+            awardWinner.setStatus(AwardWinner.Status.INTEGRATION);
             OffsetDateTime executionDate = OffsetDateTime.now();
             awardWinner.setInsertDate(executionDate);
             awardWinner.setUpdateDate(executionDate);

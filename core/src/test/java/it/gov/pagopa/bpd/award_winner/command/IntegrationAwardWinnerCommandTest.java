@@ -1,12 +1,8 @@
 package it.gov.pagopa.bpd.award_winner.command;
 
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
-import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerIntegration;
-import it.gov.pagopa.bpd.award_winner.mapper.AwardWinnerMapper;
 import it.gov.pagopa.bpd.award_winner.mapper.IntegrationAwardWinnerMapper;
-import it.gov.pagopa.bpd.award_winner.model.AwardWinnerCommandModel;
 import it.gov.pagopa.bpd.award_winner.model.AwardWinnerIntegrationCommandModel;
-import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
 import it.gov.pagopa.bpd.award_winner.model.PaymentIntegrationAwardWinner;
 import it.gov.pagopa.bpd.award_winner.service.AwardPeriodConnectorService;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerService;
@@ -54,7 +50,7 @@ public class IntegrationAwardWinnerCommandTest extends BaseTest {
     public void TestExecute_OK() throws Exception {
 
         PaymentIntegrationAwardWinner paymentIntegrationAwardWinner = getRequestModel();
-        AwardWinnerIntegration savedModel = getSavedModel();
+        AwardWinner savedModel = getSavedModel();
         BDDMockito.doReturn(1L).when(awardPeriodConnectorService).findAwardPeriodId(
                 Mockito.eq(savedModel.getAwardPeriodStart()), Mockito.eq(savedModel.getAwardPeriodEnd()));
 
@@ -108,8 +104,8 @@ public class IntegrationAwardWinnerCommandTest extends BaseTest {
                 .build();
     }
 
-    protected AwardWinnerIntegration getSavedModel() {
-        return AwardWinnerIntegration.builder()
+    protected AwardWinner getSavedModel() {
+        return AwardWinner.builder()
                 .consapId(Long.valueOf("000000001"))
                 .relatedId(Long.valueOf("000000001"))
                 .ticketId(Long.valueOf("000000001"))
@@ -129,7 +125,7 @@ public class IntegrationAwardWinnerCommandTest extends BaseTest {
                 .cro("17270006101")
                 .executionDate(LocalDate.parse("27/07/2020", dtf))
                 .technicalAccountHolder("technicalProperty")
-                .status(AwardWinnerIntegration.Status.INTEGRATION)
+                .status(AwardWinner.Status.INTEGRATION)
                 .build();
     }
 

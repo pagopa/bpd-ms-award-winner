@@ -16,4 +16,7 @@ import java.util.List;
 @Repository
 public interface AwardWinnerDAO extends CrudJpaDAO<AwardWinner, Long> {
 
+    List<AwardWinner> findByConsapIdAndRelatedIdAndTicketIdAndStatus(
+            Long consapId, Long relatedId, Long ticketId, AwardWinner.Status status);
+
 }
