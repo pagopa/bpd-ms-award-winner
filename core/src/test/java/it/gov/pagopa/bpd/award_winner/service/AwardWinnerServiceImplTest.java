@@ -2,9 +2,9 @@ package it.gov.pagopa.bpd.award_winner.service;
 
 import eu.sia.meda.BaseTest;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerDAO;
-import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerIntegrationDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.CitizenReplicaDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
+import it.gov.pagopa.bpd.award_winner.connector.jpa.model.Citizen;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -26,9 +27,6 @@ public class AwardWinnerServiceImplTest extends BaseTest {
 
     @MockBean
     private AwardWinnerDAO awardWinnerDAOMock;
-
-    @MockBean
-    private AwardWinnerIntegrationDAO awardWinnerIntegrationDAOMock;
 
     @MockBean
     private CitizenReplicaDAO citizenReplicaDAOMock;
@@ -44,7 +42,7 @@ public class AwardWinnerServiceImplTest extends BaseTest {
     public void initTest() {
         Mockito.reset(awardWinnerDAOMock);
         awardWinnerService = new AwardWinnerServiceImpl(
-                awardWinnerDAOMock,awardWinnerIntegrationDAOMock,citizenReplicaDAOMock);
+                awardWinnerDAOMock,citizenReplicaDAOMock);
     }
 
     @Test
@@ -67,6 +65,49 @@ public class AwardWinnerServiceImplTest extends BaseTest {
         expectedException.expect(Exception.class);
         awardWinnerService.updateAwardWinner(AwardWinner.builder().build());
         BDDMockito.verify(awardWinnerDAOMock).update(Mockito.any());
+    }
+
+    @Test
+    public void insert_OK() throws Exception {
+        AwardWinner awardWinner = AwardWinner.builder()
+                .fiscalCode("TESTCF").consapId(1L).relatedId(1L).ticketId(1L).build();
+        Citizen citizen = new Citizen();
+        citizen.setFiscalCode("TESTCF");
+        BDDMockito.doReturn(Optional.of(citizen)).when(citizenReplicaDAOMock).findById(awardWinner.getFiscalCode());
+        BDDMockito.doReturn(Collections.emptyList()).when(awardWinnerDAOMock)
+                .findByConsapIdAndRelatedIdAndTicketIdAndStatus(
+                        awardWinner.getConsapId(),awardWinner.getRelatedId(),
+                        awardWinner.getTicketId(),awardWinner.getStatus());
+        BDDMockito.doReturn(awardWinner).when(awardWinnerDAOMock).update(Mockito.eq(awardWinner));
+        awardWinner = awardWinnerService.insertIntegrationAwardWinner(awardWinner);
+        Assert.assertNotNull(awardWinner);
+        BDDMockito.verify(awardWinnerDAOMock).update(Mockito.eq(awardWinner));
+    }
+
+    @Test
+    public void insert_KO_CF() throws Exception {
+        Citizen citizen = new Citizen();
+        citizen.setFiscalCode("TESTCF");
+        BDDMockito.doReturn(Optional.of(citizen)).when(citizenReplicaDAOMock).findById("TESTCF");
+        expectedException.expect(Exception.class);
+        awardWinnerService.insertIntegrationAwardWinner(AwardWinner.builder().fiscalCode("TESTCF1").build());
+        BDDMockito.verify(citizenReplicaDAOMock).findById(Mockito.any());
+    }
+
+    @Test
+    public void insert_KO_ExistingClass() throws Exception {
+        AwardWinner awardWinner = AwardWinner.builder()
+                .fiscalCode("TESTCF").consapId(1L).relatedId(1L).ticketId(1L).build();
+        Citizen citizen = new Citizen();
+        citizen.setFiscalCode("TESTCF");
+        BDDMockito.doReturn(Optional.of(citizen)).when(citizenReplicaDAOMock).findById("TESTCF");
+        BDDMockito.doReturn(Collections.singletonList(awardWinner)).when(awardWinnerDAOMock)
+                .findByConsapIdAndRelatedIdAndTicketIdAndStatus(
+                        awardWinner.getConsapId(),awardWinner.getRelatedId(),
+                        awardWinner.getTicketId(),awardWinner.getStatus());
+        expectedException.expect(Exception.class);
+        awardWinnerService.insertIntegrationAwardWinner(awardWinner);
+        BDDMockito.verify(citizenReplicaDAOMock).findById(Mockito.any());
     }
 
 

@@ -19,6 +19,8 @@ import java.time.LocalDate;
 public class AwardWinner extends BaseEntity implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bpd_award_bpd_ward_id_seq")
+    @SequenceGenerator(name = "bpd_award_bpd_ward_id_seq", sequenceName = "bpd_award_bpd_ward_id_seq")
     @Column(name = "id_n")
     Long id;
 
