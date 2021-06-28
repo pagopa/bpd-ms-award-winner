@@ -22,6 +22,8 @@ spec:
                 name: postgres-credentials
             - secretRef:
                 name: bpdmsawardwinner
+            - secretRef:
+                name: application-insights
             - configMapRef:
                 name: eventhub-logging
             - configMapRef:
