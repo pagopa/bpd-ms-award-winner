@@ -28,15 +28,19 @@ public interface AwardWinnerDAO extends CrudJpaDAO<AwardWinner, Long> {
                     " account_holder_name_s= tmp.account_holder_name_s," +
                     " account_holder_surname_s = tmp.account_holder_surname_s," +
                     " technical_account_holder_s= tmp.technical_account_holder_s," +
-                    " issuer_card_id_s = tmp.issuer_card_id_s" +
-                    " from (select baw.id_n, bc.payoff_instr_s, baw.esito_bonifico_s, bc.account_holder_cf_s, bc.account_holder_name_s, bc.account_holder_surname_s,  bc.technical_account_holder_s, bc.issuer_card_id_s" +
+                    " issuer_card_id_s = tmp.issuer_card_id_s," +
+                    " aw_period_start_d = tmp.aw_period_start_d," +
+                    " aw_period_end_d = tmp.aw_period_end_d" +
+                    " from (select baw.id_n, bc.payoff_instr_s, baw.esito_bonifico_s, bc.account_holder_cf_s, bc.account_holder_name_s, bc.account_holder_surname_s,  bc.technical_account_holder_s, bc.issuer_card_id_s, bap.aw_period_start_d, bap.aw_period_end_d" +
                     " from bpd_citizen.bpd_award_winner baw" +
                     " inner join bpd_citizen.bpd_citizen bc on baw.fiscal_code_s = bc.fiscal_code_s" +
+                    " inner join bpd_award_period.bpd_award_period bap on baw.award_period_id_n = bap.award_period_id_n" +
                     " where (baw.payoff_instr_s is null or baw.payoff_instr_s = '')" +
                     " and bc.payoff_instr_s is not null" +
                     " and bc.payoff_instr_s <> ''" +
-                    " and (baw.esito_bonifico_s is not null or baw.esito_bonifico_s = '')" +
+                    " and (baw.esito_bonifico_s is null or baw.esito_bonifico_s = '')" +
                     " and bc.enabled_b is true" +
+                    " and baw.status_s = 'NEW'" +
                     " and (baw.update_date_t < current_timestamp - interval '24 hour' or baw.update_date_t is null)" +
                     " ) tmp" +
                     " WHERE baw.id_n = tmp.id_n;"
@@ -110,7 +114,7 @@ public interface AwardWinnerDAO extends CrudJpaDAO<AwardWinner, Long> {
                     " null," +
                     " null," +
                     " null," +
-                    " null," +
+                    " baw.id_n," +
                     " bc.issuer_card_id_s" +
                   " from bpd_citizen.bpd_award_winner baw" +
                   " inner join bpd_citizen.bpd_citizen bc on baw.fiscal_code_s = bc.fiscal_code_s" +
@@ -119,7 +123,15 @@ public interface AwardWinnerDAO extends CrudJpaDAO<AwardWinner, Long> {
                   " and bc.payoff_instr_s is not null" +
                   " and bc.enabled_b is true" +
                   " and bc.payoff_instr_s <> ''" +
-                  " and baw.update_date_t < current_timestamp - interval '24 hour';"
+                  " and baw.update_date_t < current_timestamp - interval '24 hour'" +
+                  "and not exists (select 1" +
+                    "from bpd_citizen.bpd_award_winner bawin" +
+                    "where bawin.fiscal_code_s=bc.fiscal_code_s" +
+                    "and bawin.payoff_instr_s=bc.payoff_instr_s" +
+                    "and bawin.award_period_id_n = baw.award_period_id_n" +
+                    "and status_s='NEW'" +
+                    "and ticket_id_n is null" +
+                    "and related_id_n is null);"
     )
     void updateIban();
 
@@ -211,7 +223,6 @@ public interface AwardWinnerDAO extends CrudJpaDAO<AwardWinner, Long> {
             "select baw from AwardWinner baw " +
             "where baw.fiscalCode = :fiscalCode " +
             "and baw.ticketId = :ticketId " +
-            "and baw.relatedPaymentId = :relatedPaymentId " +
             "and baw.relatedPaymentId = :relatedPaymentId "
     )
     AwardWinner getAwardWinner(@Param("fiscalCode") String fiscalCode,
