@@ -97,6 +97,11 @@ public class AwardWinner extends BaseEntity {
     @Column(name = "issuer_card_id_s")
     String issuerCardId;
 
+    @Column(name = "to_notify_b")
+    private Boolean toNotify;
+
+    @Column(name = "notify_times_n")
+    private Long notifyTimes;
 
 
 }

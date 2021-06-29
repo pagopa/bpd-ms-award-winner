@@ -29,16 +29,20 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
 
         Optional<AwardWinner> storedAwardWinner = awardWinnerDAO.findById(awardWinner.getId());
 
-        if(!storedAwardWinner.isPresent()){
+        if (!storedAwardWinner.isPresent()) {
             throw new Exception("Id not found");
         }
 
-        storedAwardWinner.get().setResult(awardWinner.getResult());
-        storedAwardWinner.get().setResultReason(awardWinner.getResultReason());
-        storedAwardWinner.get().setCro(awardWinner.getCro());
-        storedAwardWinner.get().setExecutionDate(awardWinner.getExecutionDate());
+        AwardWinner found = storedAwardWinner.get();
 
-        return awardWinnerDAO.update(storedAwardWinner.get());
+        found.setResult(awardWinner.getResult());
+        found.setResultReason(awardWinner.getResultReason());
+        found.setCro(awardWinner.getCro());
+        found.setExecutionDate(awardWinner.getExecutionDate());
+        found.setToNotify(Boolean.TRUE);
+        found.setNotifyTimes(0L);
+
+        return awardWinnerDAO.update(found);
     }
 
     @Override
@@ -47,27 +51,11 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
 
         if (logger.isInfoEnabled()) {
             logger.info("AwardWinnerServiceImpl.updateAwardWinners start");
-            logger.info("Start Insert new iban");
         }
 
-        awardWinnerDAO.insertNewIban();
+        awardWinnerDAO.updateWinnerTwiceWeek();
 
         if (logger.isInfoEnabled()) {
-            logger.info("Insert new iban completed");
-            logger.info("Start Update iban");
-        }
-
-        awardWinnerDAO.updateIban();
-
-        if (logger.isInfoEnabled()) {
-            logger.info("Update iban completed");
-            logger.info("Start CheckAndUpdateUnprocessedPayment");
-        }
-
-        awardWinnerDAO.checkAndUpdateUnprocessedPayment();
-
-        if (logger.isInfoEnabled()) {
-            logger.info("CheckAndUpdateUnprocessedPayment completed");
             logger.info("AwardWinnerServiceImpl.updateAwardWinners end");
         }
     }
