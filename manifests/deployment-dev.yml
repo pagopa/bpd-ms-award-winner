@@ -15,6 +15,7 @@ spec:
       containers:
         - name: bpdmsawardwinner
           image: cstardacr.azurecr.io/bpdmsawardwinner
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           envFrom:
