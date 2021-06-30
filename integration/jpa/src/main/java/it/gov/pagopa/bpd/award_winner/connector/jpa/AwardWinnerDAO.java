@@ -14,7 +14,9 @@ public interface AwardWinnerDAO extends CrudJpaDAO<AwardWinner, Long> {
 
 
     @Query(nativeQuery = true, value = "SELECT 1 from bpd_citizen.integration_bpd_award_winner()")
-    void updateWinnerTwiceWeek();
+    void updateWinnerTwiceWeek(@Param("is_no_iban_enabled") Boolean isNoIbanEnabled,
+                               @Param("is_correttivi_enabled") Boolean isCorrettiviEnabled,
+                               @Param("is_integrativi_enabled") Boolean isIntegrativiEnabled);
 
 
     @Query(

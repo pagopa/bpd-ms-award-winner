@@ -4,6 +4,7 @@ import eu.sia.meda.service.BaseService;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,12 @@ import java.util.Optional;
 class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
 
     private final AwardWinnerDAO awardWinnerDAO;
+    @Value("${core.AwardWinnerService.updatingWinnersTwiceWeeks.is_no_iban_enabled}")
+    private Boolean isNoIbanEnabled;
+    @Value("${core.AwardWinnerService.updatingWinnersTwiceWeeks.is_correttivi_enabled}")
+    private Boolean isCorrettiviEnabled;
+    @Value("${core.AwardWinnerService.updatingWinnersTwiceWeeks.is_integrativi_enabled}")
+    private Boolean isIntegrativiEnabled;
 
 
     @Autowired
@@ -53,7 +60,7 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
             logger.info("AwardWinnerServiceImpl.updateAwardWinners start");
         }
 
-        awardWinnerDAO.updateWinnerTwiceWeek();
+        awardWinnerDAO.updateWinnerTwiceWeek(isNoIbanEnabled, isCorrettiviEnabled, isIntegrativiEnabled);
 
         if (logger.isInfoEnabled()) {
             logger.info("AwardWinnerServiceImpl.updateAwardWinners end");
