@@ -4,10 +4,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * Configuration class for the OnInfoPaymentRequestListener class
+ * Configuration class for the OnIntegratedPaymentRequestListener class
  */
 
 @Configuration
-@PropertySource("classpath:config/infoPaymentRequestListener.properties")
-class InfoEventRequestConfig {
+@PropertySource("classpath:config/integratedPaymentRequestListener.properties")
+public class IntegratedPaymentsRequestConfig {
 }

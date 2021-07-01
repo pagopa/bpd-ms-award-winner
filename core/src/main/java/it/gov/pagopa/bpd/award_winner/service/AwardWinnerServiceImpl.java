@@ -6,9 +6,12 @@ import it.gov.pagopa.bpd.award_winner.connector.jpa.CitizenReplicaDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.Citizen;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -19,6 +22,12 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
 
     private final AwardWinnerDAO awardWinnerDAO;
     private final CitizenReplicaDAO citizenReplicaDAO;
+    @Value("${core.AwardWinnerService.updatingWinnersTwiceWeeks.is_no_iban_enabled}")
+    private Boolean isNoIbanEnabled;
+    @Value("${core.AwardWinnerService.updatingWinnersTwiceWeeks.is_correttivi_enabled}")
+    private Boolean isCorrettiviEnabled;
+    @Value("${core.AwardWinnerService.updatingWinnersTwiceWeeks.is_integrativi_enabled}")
+    private Boolean isIntegrativiEnabled;
 
 
     @Autowired
@@ -33,7 +42,7 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
 
         Optional<AwardWinner> storedAwardWinner = awardWinnerDAO.findById(awardWinner.getId());
 
-        if(!storedAwardWinner.isPresent()){
+        if (!storedAwardWinner.isPresent()) {
             throw new Exception("Id not found");
         }
 
@@ -47,6 +56,21 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
         found.setNotifyTimes(0L);
 
         return awardWinnerDAO.update(found);
+    }
+
+    @Override
+    @Scheduled(cron = "${core.AwardWinnerService.updatingWinnersTwiceWeeks.scheduler}")
+    public void updatingWinnersTwiceWeeks() throws IOException {
+
+        if (logger.isInfoEnabled()) {
+            logger.info("AwardWinnerServiceImpl.updateAwardWinners start");
+        }
+
+        awardWinnerDAO.updateWinnerTwiceWeek(isNoIbanEnabled, isCorrettiviEnabled, isIntegrativiEnabled);
+
+        if (logger.isInfoEnabled()) {
+            logger.info("AwardWinnerServiceImpl.updateAwardWinners end");
+        }
     }
 
     @Override
@@ -64,7 +88,7 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
                         awardWinner.getRelatedId(),
                         awardWinner.getTicketId(),
                         awardWinner.getStatus()
-        );
+                );
 
         if (!awardWinnerList.isEmpty()) {
             throw new Exception("Existing integration payment with equal ids");

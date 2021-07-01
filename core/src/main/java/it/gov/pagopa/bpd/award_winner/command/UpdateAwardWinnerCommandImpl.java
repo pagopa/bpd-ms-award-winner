@@ -8,6 +8,7 @@ import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.header.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -62,12 +63,14 @@ class UpdateAwardWinnerCommandImpl extends BaseCommand<Boolean> implements Updat
 
             validateRequest(paymentInfoAwardWinner);
             AwardWinner awardWinner = awardWinnerMapper.map(paymentInfoAwardWinner);
-            awardWinnerService.updateAwardWinner(awardWinner);
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("Saved info payment for awardWinner: " +
-                        paymentInfoAwardWinner.getUniqueID());
-            }
+                awardWinnerService.updateAwardWinner(awardWinner);
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Saved info payment for awardWinner: " +
+                            paymentInfoAwardWinner.getUniqueID());
+                }
+//            }
 
             return true;
 

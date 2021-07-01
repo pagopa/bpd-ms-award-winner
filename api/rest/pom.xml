@@ -4,12 +4,12 @@
     <parent>
         <artifactId>bpd-ms-award-winner-api</artifactId>
         <groupId>it.gov.pagopa.bpd.ms.award_winner</groupId>
-        <version>cst_115_rc2</version>
+        <version>CEN-131-rc4</version>
     </parent>
 
     <groupId>it.gov.pagopa.bpd.ms.award_winner.api</groupId>
     <artifactId>bpd-ms-award-winner-api-rest</artifactId>
-    <version>cst_115_rc2</version>
+    <version>CEN-131-rc4</version>
 
     <dependencies>
         <dependency>

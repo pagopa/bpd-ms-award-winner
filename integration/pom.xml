@@ -4,17 +4,16 @@
     <parent>
         <artifactId>bpd-ms-award-winner</artifactId>
         <groupId>it.gov.pagopa.bpd.ms</groupId>
-        <version>cst_115_rc2</version>
+        <version>CEN-131-rc4</version>
     </parent>
 
     <groupId>it.gov.pagopa.bpd.ms.award_winner</groupId>
     <artifactId>bpd-ms-award-winner-integration</artifactId>
-    <version>cst_115_rc2</version>
+    <version>CEN-131-rc4</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>jpa</module>
         <module>event</module>
-        <module>rest</module>
     </modules>
 </project>
