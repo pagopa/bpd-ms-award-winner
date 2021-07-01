@@ -5,12 +5,12 @@
 
         <groupId>it.gov.pagopa.bpd.ms.award_winner</groupId>
         <artifactId>bpd-ms-award-winner-integration</artifactId>
-        <version>CEN-131-rc4</version>
+        <version>cen_115_131_rc1</version>
     </parent>
 
     <groupId>it.gov.pagopa.bpd.ms.award_winner.integration</groupId>
     <artifactId>bpd-ms-award-winner-integration-event</artifactId>
-    <version>CEN-131-rc4</version>
+    <version>cen_115_131_rc1</version>
 
     <dependencies>
         <dependency>
