@@ -83,9 +83,9 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
         }
 
         List<AwardWinner> awardWinnerList = awardWinnerDAO
-                .findByConsapIdAndRelatedIdAndTicketIdAndStatus(
+                .findByConsapIdAndRelatedPaymentIdAndTicketIdAndStatus(
                         awardWinner.getConsapId(),
-                        awardWinner.getRelatedId(),
+                        awardWinner.getRelatedPaymentId(),
                         awardWinner.getTicketId(),
                         awardWinner.getStatus()
                 );

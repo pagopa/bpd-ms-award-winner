@@ -72,13 +72,13 @@ public class AwardWinnerServiceImplTest extends BaseTest {
     @Test
     public void insert_OK() throws Exception {
         AwardWinner awardWinner = AwardWinner.builder()
-                .fiscalCode("TESTCF").consapId(1L).relatedId(1L).ticketId(1L).build();
+                .fiscalCode("TESTCF").consapId(1L).relatedPaymentId(1L).ticketId(1L).build();
         Citizen citizen = new Citizen();
         citizen.setFiscalCode("TESTCF");
         BDDMockito.doReturn(Optional.of(citizen)).when(citizenReplicaDAOMock).findById(awardWinner.getFiscalCode());
         BDDMockito.doReturn(Collections.emptyList()).when(awardWinnerDAOMock)
-                .findByConsapIdAndRelatedIdAndTicketIdAndStatus(
-                        awardWinner.getConsapId(),awardWinner.getRelatedId(),
+                .findByConsapIdAndRelatedPaymentIdAndTicketIdAndStatus(
+                        awardWinner.getConsapId(),awardWinner.getRelatedPaymentId(),
                         awardWinner.getTicketId(),awardWinner.getStatus());
         BDDMockito.doReturn(awardWinner).when(awardWinnerDAOMock).update(Mockito.eq(awardWinner));
         awardWinner = awardWinnerService.insertIntegrationAwardWinner(awardWinner);
@@ -99,13 +99,13 @@ public class AwardWinnerServiceImplTest extends BaseTest {
     @Test
     public void insert_KO_ExistingClass() throws Exception {
         AwardWinner awardWinner = AwardWinner.builder()
-                .fiscalCode("TESTCF").consapId(1L).relatedId(1L).ticketId(1L).build();
+                .fiscalCode("TESTCF").consapId(1L).relatedPaymentId(1L).ticketId(1L).build();
         Citizen citizen = new Citizen();
         citizen.setFiscalCode("TESTCF");
         BDDMockito.doReturn(Optional.of(citizen)).when(citizenReplicaDAOMock).findById("TESTCF");
         BDDMockito.doReturn(Collections.singletonList(awardWinner)).when(awardWinnerDAOMock)
-                .findByConsapIdAndRelatedIdAndTicketIdAndStatus(
-                        awardWinner.getConsapId(),awardWinner.getRelatedId(),
+                .findByConsapIdAndRelatedPaymentIdAndTicketIdAndStatus(
+                        awardWinner.getConsapId(),awardWinner.getRelatedPaymentId(),
                         awardWinner.getTicketId(),awardWinner.getStatus());
         expectedException.expect(Exception.class);
         awardWinnerService.insertIntegrationAwardWinner(awardWinner);

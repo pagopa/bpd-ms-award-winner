@@ -107,9 +107,6 @@ public class AwardWinner extends BaseEntity implements Serializable {
     @Column(name = "notify_times_n")
     private Long notifyTimes;
 
-    @Column(name = "related_id_n")
-    Long relatedId;
-
 }
 
 

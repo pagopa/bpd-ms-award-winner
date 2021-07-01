@@ -71,7 +71,8 @@ public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener
 
 
         if (headers.toArray() != null && headers.toArray().length > 0 &&
-                Arrays.stream(headers.toArray()).anyMatch(h -> ((RecordHeader) h).key().equals(ListenerHeaders.PAYMENT_INFO_HEADER))) {
+                Arrays.stream(headers.toArray()).anyMatch(
+                        h -> h.key().equals(ListenerHeaders.PAYMENT_INFO_HEADER))) {
 
             try {
 
@@ -139,10 +140,11 @@ public class OnInfoPaymentRequestListener extends BaseConsumerAwareEventListener
                 if (log.isDebugEnabled()) {
                     log.debug("SavePaymentInfoOnErrorCommand successfully executed for inbound message");
                 }
-        }
+            }
 
         } else if (headers.toArray() != null && headers.toArray().length > 0 &&
-                Arrays.stream(headers.toArray()).anyMatch(h -> ((RecordHeader) h).key().equals(ListenerHeaders.INTEGRATION_PAYMENT_HEADER))) {
+                Arrays.stream(headers.toArray()).anyMatch(
+                        h -> h.key().equals(ListenerHeaders.INTEGRATION_PAYMENT_HEADER))) {
 
             try {
 
