@@ -6,17 +6,11 @@ import eu.sia.meda.eventlistener.BaseEventListenerTest;
 import it.gov.pagopa.bpd.award_winner.command.InsertIntegratedPaymentCommand;
 import it.gov.pagopa.bpd.award_winner.command.SavePaymentInfoOnErrorCommand;
 import it.gov.pagopa.bpd.award_winner.command.UpdateAwardWinnerCommand;
-import it.gov.pagopa.bpd.award_winner.listener.factory.ModelFactory;
 import it.gov.pagopa.bpd.award_winner.listener.factory.SaveInfoPaymentCommandModelFactory;
 import it.gov.pagopa.bpd.award_winner.listener.factory.SaveIntegratedPaymentCommandModelFactory;
 import it.gov.pagopa.bpd.award_winner.listener.factory.SaveOnErrorCommandModelFactory;
-import it.gov.pagopa.bpd.award_winner.model.IntegratedPaymentCommandModel;
 import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.kafka.common.header.Headers;
-import org.junit.Assert;
 import org.junit.Before;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -30,7 +24,8 @@ import org.springframework.test.context.TestPropertySource;
 
 @Import({OnInfoPaymentRequestListener.class})
 @TestPropertySource(
-        locations = "classpath:config/testInfoPaymentRequestListener.properties",
+        locations = {"classpath:config/testInfoPaymentRequestListener.properties",
+                "classpath:config/testIntegratedPaymentRequestListener.properties"},
         properties = {
                 "listeners.eventConfigurations.items.OnInfoPaymentRequestListener.bootstrapServers=${spring.embedded.kafka.brokers}"
         })
@@ -90,6 +85,7 @@ public class OnInfoPaymentRequestListenerTest extends BaseEventListenerTest {
 
     @Override
     protected void verifyInvocation(String json) {
+
 //        try {
 //            BDDMockito.verify(saveInfoPaymentCommandModelFactorySpy, Mockito.atLeastOnce())
 //                    .createModel(Mockito.any());
