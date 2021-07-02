@@ -69,9 +69,8 @@ public class AwardWinner extends BaseEntity {
     @Column(name = "status_s")
     Status status;
 
-    public enum Status {
-        NEW, SENT, RECOVERY
-    }
+    @Column(name = "consap_id_n")
+    Long consapId;
 
     @Column(name = "esito_bonifico_s")
     String result;
@@ -84,6 +83,19 @@ public class AwardWinner extends BaseEntity {
 
     @Column(name = "data_esecuzione_t")
     LocalDate executionDate;
+
+    @Column(name = "ticket_id_n")
+    Long ticketId;
+
+    @Column(name = "related_id_n")
+    Long relatedPaymentId;
+
+    @Column(name = "issuer_card_id_s")
+    String issuerCardId;
+
+    public enum Status {
+        NEW, SENT, RECOVERY, INTEGRATION
+    }
 
     @Column(name = "to_notify_b")
     private Boolean toNotify;
