@@ -18,25 +18,20 @@ public interface AwardWinnerDAO extends CrudJpaDAO<AwardWinner, Long> {
             Long consapId, Long relatedId, Long ticketId, AwardWinner.Status status);
 
 
-    @Query(nativeQuery = true, value = "SELECT 1 from bpd_citizen.integration_bpd_award_winner()")
-    void updateWinnerTwiceWeek(@Param("is_no_iban_enabled") Boolean isNoIbanEnabled,
-                               @Param("is_correttivi_enabled") Boolean isCorrettiviEnabled,
-                               @Param("is_integrativi_enabled") Boolean isIntegrativiEnabled);
+    @Query(nativeQuery = true, value = "SELECT 1 from bpd_citizen.integration_bpd_award_winner(:isNoIbanEnabled,:isCorrettiviEnabled,:isIntegrativiEnabled)")
+    void updateWinnerTwiceWeek(@Param("isNoIbanEnabled") Boolean isNoIbanEnabled,
+                               @Param("isCorrettiviEnabled") Boolean isCorrettiviEnabled,
+                               @Param("isIntegrativiEnabled") Boolean isIntegrativiEnabled);
 
 
-    @Query(
-            "select baw from AwardWinner baw " +
-                    "where baw.fiscalCode = :fiscalCode " +
-                    "and baw.ticketId = :ticketId " +
-                    "and baw.relatedPaymentId = :relatedPaymentId "
+    @Query("select baw from AwardWinner baw " +
+            "where baw.fiscalCode = :fiscalCode " +
+            "and baw.ticketId = :ticketId " +
+            "and baw.relatedPaymentId = :relatedPaymentId "
     )
     AwardWinner getAwardWinner(@Param("fiscalCode") String fiscalCode,
                                @Param("ticketId") Long ticketId,
                                @Param("relatedPaymentId") Long relatedPaymentId);
 
-
-    @Query(nativeQuery=true,
-            value="select max(id_n) from bpd_citizen.bpd_award_winner baw")
-    Long getId();
 
 }
