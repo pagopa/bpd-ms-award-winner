@@ -17,6 +17,7 @@ public class IntegratedPaymentMapper {
             awardWinner = AwardWinner.builder().build();
             BeanUtils.copyProperties(integratedPayment.get(), awardWinner);
             awardWinner.setStatus(AwardWinner.Status.NEW);
+            awardWinner.setId(null);
             awardWinner.setResult(null);
             awardWinner.setCro(null);
             awardWinner.setExecutionDate(null);
