@@ -4,12 +4,12 @@
     <parent>
         <artifactId>bpd-ms-award-winner</artifactId>
         <groupId>it.gov.pagopa.bpd.ms</groupId>
-        <version>cen_115_131_rc3</version>
+        <version>cen_115_131_rc4</version>
     </parent>
 
     <groupId>it.gov.pagopa.bpd.ms.award_winner</groupId>
     <artifactId>bpd-ms-award-winner-api</artifactId>
-    <version>cen_115_131_rc3</version>
+    <version>cen_115_131_rc4</version>
     <packaging>pom</packaging>
 
     <dependencies>
