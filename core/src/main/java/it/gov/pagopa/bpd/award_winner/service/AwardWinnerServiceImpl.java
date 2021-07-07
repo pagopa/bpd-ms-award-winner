@@ -5,13 +5,14 @@ import it.gov.pagopa.bpd.award_winner.connector.jpa.AwardWinnerDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.CitizenReplicaDAO;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.Citizen;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -60,6 +61,8 @@ class AwardWinnerServiceImpl extends BaseService implements AwardWinnerService {
 
     @Override
     @Scheduled(cron = "${core.AwardWinnerService.updatingWinnersTwiceWeeks.scheduler}")
+    @SchedulerLock(name = "AwardWinnerServiceImpl.updatingWinnersTwiceWeeks",
+            lockAtMostFor = "${core.AwardWinnerService.updatingWinnersTwiceWeeks.lockAtMostFor}")
     public void updatingWinnersTwiceWeeks() throws IOException {
 
         if (logger.isInfoEnabled()) {

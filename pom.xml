@@ -86,6 +86,16 @@
                 <version>${bpd-commons.version}</version>
                 <type>test-jar</type>
             </dependency>
+            <dependency>
+                <groupId>net.javacrumbs.shedlock</groupId>
+                <artifactId>shedlock-spring</artifactId>
+                <version>4.24.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.javacrumbs.shedlock</groupId>
+                <artifactId>shedlock-provider-jdbc-template</artifactId>
+                <version>4.24.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
