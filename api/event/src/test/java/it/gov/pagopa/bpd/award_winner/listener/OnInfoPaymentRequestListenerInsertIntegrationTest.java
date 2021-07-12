@@ -7,6 +7,7 @@ import it.gov.pagopa.bpd.award_winner.command.*;
 import it.gov.pagopa.bpd.award_winner.constants.ListenerHeaders;
 import it.gov.pagopa.bpd.award_winner.listener.factory.*;
 import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
+import it.gov.pagopa.bpd.award_winner.model.PaymentIntegrationAwardWinner;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.header.internals.RecordHeaders;
 import org.junit.Assert;
@@ -30,7 +31,7 @@ import org.springframework.test.context.TestPropertySource;
         properties = {
                 "listeners.eventConfigurations.items.OnInfoPaymentRequestListener.bootstrapServers=${spring.embedded.kafka.brokers}"
         })
-public class OnInfoPaymentRequestListenerTest extends BaseEventListenerTest {
+public class OnInfoPaymentRequestListenerInsertIntegrationTest extends BaseEventListenerTest {
 
 
     @SpyBean
@@ -77,15 +78,15 @@ public class OnInfoPaymentRequestListenerTest extends BaseEventListenerTest {
                 updateAwardWinnerCommandMock,
                 saveIntegratedPaymentCommandModelFactorySpy,
                 savePaymentInfoOnErrorCommandMock);
-        Mockito.doReturn(true).when(updateAwardWinnerCommandMock).execute();
-        Mockito.doReturn(true).when(savePaymentInfoOnErrorCommandMock).execute();
+        Mockito.doReturn(true).when(insertAwardWinnerCommand).execute();
+        Mockito.doReturn(true).when(savePaymentIntegrationOnErrorCommand).execute();
 
     }
 
     @Override
     protected Object getRequestObject() {
-        return PaymentInfoAwardWinner.builder()
-                .uniqueID("000000001")
+        return PaymentIntegrationAwardWinner.builder()
+                .idComplaint("000000001")
                 .result("OK")
                 .resultReason("resultReason")
                 .cro("17270006101")
@@ -93,12 +94,12 @@ public class OnInfoPaymentRequestListenerTest extends BaseEventListenerTest {
                 .build();
     }
 
-    protected Headers getRequestHeaders() {
+    protected Headers getRequestHeaders()
+    {
         RecordHeaders recordHeaders = new RecordHeaders();
-        recordHeaders.add(ListenerHeaders.PAYMENT_INFO_HEADER, "true".getBytes());
+        recordHeaders.add(ListenerHeaders.INTEGRATION_HEADER, "true".getBytes());
         return recordHeaders;
     }
-
 
     @Override
     protected String getTopic() {
@@ -107,13 +108,12 @@ public class OnInfoPaymentRequestListenerTest extends BaseEventListenerTest {
 
     @Override
     protected void verifyInvocation(String json) {
-
         try {
-            BDDMockito.verify(saveInfoPaymentCommandModelFactorySpy, Mockito.atLeastOnce())
+            BDDMockito.verify(saveIntegrationPaymentCommandModelFactorySpy, Mockito.atLeastOnce())
                     .createModel(Mockito.any());
             BDDMockito.verify(objectMapperSpy, Mockito.atLeastOnce())
-                    .readValue(Mockito.anyString(), Mockito.eq(PaymentInfoAwardWinner.class));
-            BDDMockito.verify(updateAwardWinnerCommandMock, Mockito.atLeastOnce()).execute();
+                    .readValue(Mockito.anyString(), Mockito.eq(PaymentIntegrationAwardWinner.class));
+            BDDMockito.verify(insertAwardWinnerCommand, Mockito.atLeastOnce()).execute();
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();

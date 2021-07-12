@@ -14,6 +14,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.kafka.common.header.Headers;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 
 @Service
 @Slf4j
+@Conditional(OnIntegrationPaymentRequestListenerEnabledCondition.class)
 public class OnIntegrationPaymentRequestListener extends BaseConsumerAwareEventListener {
 
     private final ModelFactory<Pair<byte[], Headers>, AwardWinnerIntegrationCommandModel>
