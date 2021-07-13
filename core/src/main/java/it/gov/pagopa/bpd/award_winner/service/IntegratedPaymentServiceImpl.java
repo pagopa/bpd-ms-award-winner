@@ -43,6 +43,7 @@ public class IntegratedPaymentServiceImpl extends BaseService implements Integra
         AwardWinner awardWinner = new AwardWinner();
 
         awardWinner.setAmount(integratedPayment.getAmount());
+        awardWinner.setAwardPeriodId(integratedPayment.getAwardPeriodId());
         awardWinner.setCashback(integratedPayment.getCashbackAmount());
         awardWinner.setJackpot(integratedPayment.getJackpotAmount());
         awardWinner.setStatus(AwardWinner.Status.NEW);
