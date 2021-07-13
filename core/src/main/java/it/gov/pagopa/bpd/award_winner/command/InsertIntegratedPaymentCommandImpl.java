@@ -58,12 +58,12 @@ public class InsertIntegratedPaymentCommandImpl extends BaseCommand<Boolean> imp
 
             validateRequest(integratedPayment);
 
-                integratedPaymentService.createRecord(integratedPayment);
+            integratedPaymentService.createRecord(integratedPayment);
 
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Saved info payment for awardWinner: " +
-                            integratedPayment.getTicketId());
-                }
+            if (logger.isDebugEnabled()) {
+                logger.debug("Saved info payment for awardWinner: " +
+                        integratedPayment.getTicketId());
+            }
             return true;
 
         } catch (Exception e) {

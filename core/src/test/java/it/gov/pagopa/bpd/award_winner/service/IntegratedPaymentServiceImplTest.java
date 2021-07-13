@@ -32,7 +32,6 @@ public class IntegratedPaymentServiceImplTest extends BaseTest {
     @Autowired
     private IntegratedPaymentService integratedPaymentService;
 
-
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
