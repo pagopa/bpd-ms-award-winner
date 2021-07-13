@@ -36,19 +36,21 @@ public class IntegratedPaymentServiceImpl extends BaseService implements Integra
                 integratedPayment.getTicketId(),
                 integratedPayment.getRelatedPaymentId()));
 
-        if (!storedAwardWinner.isPresent()) {
-            throw new Exception("Related payment Id not found");
+        if (storedAwardWinner.isPresent()) {
+            throw new Exception("Related payment Id found for Id: " + integratedPayment.getRelatedPaymentId());
         }
 
-        AwardWinner awardWinner = integratedPaymentMapper.map(storedAwardWinner);
-
+        AwardWinner awardWinner = new AwardWinner();
 
         awardWinner.setAmount(integratedPayment.getAmount());
         awardWinner.setCashback(integratedPayment.getCashbackAmount());
         awardWinner.setJackpot(integratedPayment.getJackpotAmount());
-        awardWinner.setStatus(AwardWinner.Status.INTEGRATION);
+        awardWinner.setStatus(AwardWinner.Status.NEW);
         awardWinner.setInsertDate(OffsetDateTime.now());
-        awardWinner.setChunkFilename("CONSAP_BANKT_FLUSSI_INTEGRATIVI.xslx");
+        awardWinner.setInsertUser("INTEGRATIVI_XLS_CONSAP");
+        awardWinner.setFiscalCode(integratedPayment.getFiscalCode());
+        awardWinner.setTicketId(integratedPayment.getTicketId());
+        awardWinner.setRelatedPaymentId(integratedPayment.getRelatedPaymentId());
 
         return awardWinnerDAO.save(awardWinner);
     }
