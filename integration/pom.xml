@@ -4,16 +4,17 @@
     <parent>
         <artifactId>bpd-ms-award-winner</artifactId>
         <groupId>it.gov.pagopa.bpd.ms</groupId>
-        <version>1.2.0</version>
+        <version>1.3.0</version>
     </parent>
 
     <groupId>it.gov.pagopa.bpd.ms.award_winner</groupId>
     <artifactId>bpd-ms-award-winner-integration</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>jpa</module>
         <module>event</module>
+        <module>rest</module>
     </modules>
 </project>

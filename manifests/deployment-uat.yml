@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: bpdmsawardwinner
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: bpdmsawardwinner
@@ -30,6 +30,8 @@ spec:
                 name: eventhub-logging
             - configMapRef:
                 name: eventhub-common
+            - configMapRef:
+                name: rest-client
             - configMapRef:
                 name: bpdmsawardwinner
             - configMapRef:

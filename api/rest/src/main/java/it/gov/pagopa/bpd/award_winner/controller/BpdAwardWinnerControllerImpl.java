@@ -25,4 +25,5 @@ class BpdAwardWinnerControllerImpl extends StatelessController implements BpdAwa
                 beanFactory.getBean(SubmitFlaggedRecordsCommand.class);
         command.execute();
     }
+
 }

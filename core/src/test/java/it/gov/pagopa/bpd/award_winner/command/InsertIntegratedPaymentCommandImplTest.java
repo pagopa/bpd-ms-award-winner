@@ -2,9 +2,13 @@ package it.gov.pagopa.bpd.award_winner.command;
 
 import eu.sia.meda.BaseTest;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
+import it.gov.pagopa.bpd.award_winner.mapper.AwardWinnerMapper;
 import it.gov.pagopa.bpd.award_winner.mapper.IntegratedPaymentMapper;
+import it.gov.pagopa.bpd.award_winner.model.AwardWinnerCommandModel;
 import it.gov.pagopa.bpd.award_winner.model.IntegratedPayment;
 import it.gov.pagopa.bpd.award_winner.model.IntegratedPaymentCommandModel;
+import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
+import it.gov.pagopa.bpd.award_winner.service.AwardWinnerService;
 import it.gov.pagopa.bpd.award_winner.service.IntegratedPaymentService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,12 +25,15 @@ import java.time.format.DateTimeFormatter;
 
 public class InsertIntegratedPaymentCommandImplTest extends BaseTest {
 
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
     @Mock
     IntegratedPaymentService integratedPaymentService;
+
     @Spy
     IntegratedPaymentMapper integratedPaymentMapperSpy;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Before

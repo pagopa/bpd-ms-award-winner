@@ -29,6 +29,8 @@ spec:
             - configMapRef:
                 name: bpdmsawardwinner
             - configMapRef:
+                name: rest-client
+            - configMapRef:
                 name: jvm
           livenessProbe:
             httpGet:

@@ -23,14 +23,17 @@ import java.util.Optional;
 @ContextConfiguration(classes = IntegratedPaymentServiceImpl.class)
 public class IntegratedPaymentServiceImplTest extends BaseTest {
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
     @MockBean
     private AwardWinnerDAO awardWinnerDAOMock;
+
     @MockBean
     private IntegratedPaymentMapper integratedPaymentMapperMock;
+
     @Autowired
     private IntegratedPaymentService integratedPaymentService;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void initTest() {
@@ -45,15 +48,13 @@ public class IntegratedPaymentServiceImplTest extends BaseTest {
         AwardWinner testAwardWinner = new AwardWinner();
         testAwardWinner.setId(2L);
 
-        BDDMockito.doReturn(2L).when(awardWinnerDAOMock).getId();
-
         BDDMockito.doReturn(award).when(integratedPaymentMapperMock).map(Mockito.any());
 
         BDDMockito.doReturn(testAwardWinner).when(awardWinnerDAOMock).save(Mockito.any());
 
-        BDDMockito.doReturn(award).when(awardWinnerDAOMock).getAwardWinner("fiscalCode", 1L, 2L);
+        BDDMockito.doReturn(award).when(awardWinnerDAOMock).getAwardWinner("fiscalCode",1L,2L);
         AwardWinner winner = integratedPaymentMapperMock.map(aw);
-        winner.setId(awardWinnerDAOMock.getId());
+        winner.setId(2L);
         winner = awardWinnerDAOMock.save(winner);
         Assert.assertNotNull(winner);
         BDDMockito.verify(awardWinnerDAOMock).save(Mockito.eq(winner));

@@ -4,7 +4,9 @@ import eu.sia.meda.BaseTest;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinnerError;
 import it.gov.pagopa.bpd.award_winner.integration.event.model.PaymentInfo;
 import it.gov.pagopa.bpd.award_winner.mapper.ResubmitAwardWinnerMapper;
+import it.gov.pagopa.bpd.award_winner.mapper.ResubmitIntegrationAwardWinnerMapper;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerErrorService;
+import it.gov.pagopa.bpd.award_winner.service.AwardWinnerIntegrationPublisherService;
 import it.gov.pagopa.bpd.award_winner.service.AwardWinnerPublisherService;
 import org.apache.kafka.common.header.internals.RecordHeaders;
 import org.junit.Assert;
@@ -31,12 +33,18 @@ public class SubmitFlaggedRecordsCommandImplTest extends BaseTest {
     AwardWinnerErrorService awardWinnerErrorService;
     @Mock
     AwardWinnerPublisherService awardWinnerPublisherService;
+    @Mock
+    AwardWinnerIntegrationPublisherService awardWinnerIntegrationPublisherService;
     @Spy
     ResubmitAwardWinnerMapper resubmitAwardWinnerMapperSpy;
+    @Spy
+    ResubmitIntegrationAwardWinnerMapper resubmitIntegrationAwardWinnerMapperSpy;
 
     @Before
     public void initTest() {
-        Mockito.reset(awardWinnerErrorService, awardWinnerPublisherService, resubmitAwardWinnerMapperSpy);
+        Mockito.reset(
+                awardWinnerErrorService, awardWinnerPublisherService, awardWinnerIntegrationPublisherService,
+                resubmitAwardWinnerMapperSpy, resubmitIntegrationAwardWinnerMapperSpy);
     }
 
     @Test
@@ -49,11 +57,14 @@ public class SubmitFlaggedRecordsCommandImplTest extends BaseTest {
         BDDMockito.doReturn(awardWinnerErrorList)
                 .when(awardWinnerErrorService).findRecordsToResubmit();
 
-
         SubmitFlaggedRecordsCommandImpl submitFlaggedRecordsCommand = new SubmitFlaggedRecordsCommandImpl(
                 awardWinnerErrorService,
                 resubmitAwardWinnerMapperSpy,
-                awardWinnerPublisherService);
+                awardWinnerPublisherService,
+                awardWinnerIntegrationPublisherService,
+                resubmitIntegrationAwardWinnerMapperSpy
+                );
+
         Boolean executed = submitFlaggedRecordsCommand.doExecute();
 
         Mockito.verify(awardWinnerPublisherService).publishAwardWinnerEvent(Mockito.eq(paymentInfo), Mockito.any(RecordHeaders.class));

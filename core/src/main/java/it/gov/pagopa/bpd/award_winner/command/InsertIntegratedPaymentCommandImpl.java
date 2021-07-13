@@ -6,6 +6,7 @@ import it.gov.pagopa.bpd.award_winner.model.IntegratedPaymentCommandModel;
 import it.gov.pagopa.bpd.award_winner.service.IntegratedPaymentService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.header.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;

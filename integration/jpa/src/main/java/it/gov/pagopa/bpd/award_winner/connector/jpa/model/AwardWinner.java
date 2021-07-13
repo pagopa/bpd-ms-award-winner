@@ -2,8 +2,10 @@ package it.gov.pagopa.bpd.award_winner.connector.jpa.model;
 
 import it.gov.pagopa.bpd.common.connector.jpa.model.BaseEntity;
 import lombok.*;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -14,9 +16,11 @@ import java.time.LocalDate;
 @Builder
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Table(name = "bpd_award_winner")
-public class AwardWinner extends BaseEntity {
+public class AwardWinner extends BaseEntity implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bpd_award_bpd_ward_id_seq")
+    @SequenceGenerator(name = "bpd_award_bpd_ward_id_seq", sequenceName = "bpd_award_bpd_ward_id_seq")
     @Column(name = "id_n")
     Long id;
 
@@ -69,8 +73,9 @@ public class AwardWinner extends BaseEntity {
     @Column(name = "status_s")
     Status status;
 
-    @Column(name = "consap_id_n")
-    Long consapId;
+    public enum Status {
+        NEW, SENT, RECOVERY, INTEGRATION
+    }
 
     @Column(name = "esito_bonifico_s")
     String result;
@@ -84,6 +89,9 @@ public class AwardWinner extends BaseEntity {
     @Column(name = "data_esecuzione_t")
     LocalDate executionDate;
 
+    @Column(name = "consap_id_n")
+    Long consapId;
+
     @Column(name = "ticket_id_n")
     Long ticketId;
 
@@ -92,10 +100,6 @@ public class AwardWinner extends BaseEntity {
 
     @Column(name = "issuer_card_id_s")
     String issuerCardId;
-
-    public enum Status {
-        NEW, SENT, RECOVERY, INTEGRATION
-    }
 
     @Column(name = "to_notify_b")
     private Boolean toNotify;

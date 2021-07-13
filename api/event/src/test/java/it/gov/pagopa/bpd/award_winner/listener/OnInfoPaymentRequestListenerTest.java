@@ -3,14 +3,15 @@ package it.gov.pagopa.bpd.award_winner.listener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.sia.meda.event.service.ErrorPublisherService;
 import eu.sia.meda.eventlistener.BaseEventListenerTest;
-import it.gov.pagopa.bpd.award_winner.command.InsertIntegratedPaymentCommand;
-import it.gov.pagopa.bpd.award_winner.command.SavePaymentInfoOnErrorCommand;
-import it.gov.pagopa.bpd.award_winner.command.UpdateAwardWinnerCommand;
-import it.gov.pagopa.bpd.award_winner.listener.factory.SaveInfoPaymentCommandModelFactory;
-import it.gov.pagopa.bpd.award_winner.listener.factory.SaveIntegratedPaymentCommandModelFactory;
-import it.gov.pagopa.bpd.award_winner.listener.factory.SaveOnErrorCommandModelFactory;
+import it.gov.pagopa.bpd.award_winner.command.*;
+import it.gov.pagopa.bpd.award_winner.constants.ListenerHeaders;
+import it.gov.pagopa.bpd.award_winner.listener.factory.*;
 import it.gov.pagopa.bpd.award_winner.model.PaymentInfoAwardWinner;
+import org.apache.kafka.common.header.Headers;
+import org.apache.kafka.common.header.internals.RecordHeaders;
+import org.junit.Assert;
 import org.junit.Before;
+import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,7 +25,8 @@ import org.springframework.test.context.TestPropertySource;
 
 @Import({OnInfoPaymentRequestListener.class})
 @TestPropertySource(
-        locations = "classpath:config/testInfoPaymentRequestListener.properties",
+        locations = {"classpath:config/testInfoPaymentRequestListener.properties",
+                "classpath:config/testIntegratedPaymentRequestListener.properties"},
         properties = {
                 "listeners.eventConfigurations.items.OnInfoPaymentRequestListener.bootstrapServers=${spring.embedded.kafka.brokers}"
         })
@@ -47,6 +49,14 @@ public class OnInfoPaymentRequestListenerTest extends BaseEventListenerTest {
     UpdateAwardWinnerCommand updateAwardWinnerCommandMock;
     @MockBean
     SavePaymentInfoOnErrorCommand savePaymentInfoOnErrorCommandMock;
+    @SpyBean
+    SaveIntegrationPaymentCommandModelFactory saveIntegrationPaymentCommandModelFactorySpy;
+    @SpyBean
+    SaveOnIntegrationErrorCommandModelFactory saveOnIntegrationErrorCommandModelFactory;
+    @MockBean
+    InsertAwardWinnerCommand insertAwardWinnerCommand;
+    @MockBean
+    SavePaymentIntegrationOnErrorCommand savePaymentIntegrationOnErrorCommand;
 
     @Value("${listeners.eventConfigurations.items.OnInfoPaymentRequestListener.topic}")
     private String topic;
@@ -55,10 +65,17 @@ public class OnInfoPaymentRequestListenerTest extends BaseEventListenerTest {
     public void setUp() throws Exception {
 
         Mockito.reset(
+                insertAwardWinnerCommand,
+                savePaymentIntegrationOnErrorCommand,
+                saveOnIntegrationErrorCommandModelFactory,
+                saveIntegrationPaymentCommandModelFactorySpy,
+                insertIntegratedPaymentCommandMock,
+                saveIntegrationPaymentCommandModelFactorySpy,
                 onInfoPaymentRequestListenerSpy,
                 saveInfoPaymentCommandModelFactorySpy,
                 saveOnErrorCommandModelFactory,
                 updateAwardWinnerCommandMock,
+                saveIntegratedPaymentCommandModelFactorySpy,
                 savePaymentInfoOnErrorCommandMock);
         Mockito.doReturn(true).when(updateAwardWinnerCommandMock).execute();
         Mockito.doReturn(true).when(savePaymentInfoOnErrorCommandMock).execute();
@@ -76,6 +93,12 @@ public class OnInfoPaymentRequestListenerTest extends BaseEventListenerTest {
                 .build();
     }
 
+    protected Headers getRequestHeaders() {
+        RecordHeaders recordHeaders = new RecordHeaders();
+        recordHeaders.add(ListenerHeaders.PAYMENT_INFO_HEADER, "true".getBytes());
+        return recordHeaders;
+    }
+
 
     @Override
     protected String getTopic() {
@@ -84,16 +107,17 @@ public class OnInfoPaymentRequestListenerTest extends BaseEventListenerTest {
 
     @Override
     protected void verifyInvocation(String json) {
-//        try {
-//            BDDMockito.verify(saveInfoPaymentCommandModelFactorySpy, Mockito.atLeastOnce())
-//                    .createModel(Mockito.any());
-//            BDDMockito.verify(objectMapperSpy, Mockito.atLeastOnce())
-//                    .readValue(Mockito.anyString(), Mockito.eq(PaymentInfoAwardWinner.class));
-//            BDDMockito.verify(updateAwardWinnerCommandMock, Mockito.atLeastOnce()).execute();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Assert.fail();
-//        }
+
+        try {
+            BDDMockito.verify(saveInfoPaymentCommandModelFactorySpy, Mockito.atLeastOnce())
+                    .createModel(Mockito.any());
+            BDDMockito.verify(objectMapperSpy, Mockito.atLeastOnce())
+                    .readValue(Mockito.anyString(), Mockito.eq(PaymentInfoAwardWinner.class));
+            BDDMockito.verify(updateAwardWinnerCommandMock, Mockito.atLeastOnce()).execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail();
+        }
     }
 
     @Override

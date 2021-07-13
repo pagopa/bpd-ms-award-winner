@@ -8,6 +8,7 @@ import it.gov.pagopa.bpd.award_winner.model.IntegratedPayment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 /**
@@ -18,7 +19,7 @@ public class IntegratedPaymentServiceImpl extends BaseService implements Integra
 
 
     private final AwardWinnerDAO awardWinnerDAO;
-    private final IntegratedPaymentMapper integratedPaymentMapper;
+    private  final IntegratedPaymentMapper integratedPaymentMapper;
 
     @Autowired
     public IntegratedPaymentServiceImpl(AwardWinnerDAO awardWinnerDAO, IntegratedPaymentMapper integratedPaymentMapper) {
@@ -35,18 +36,22 @@ public class IntegratedPaymentServiceImpl extends BaseService implements Integra
                 integratedPayment.getTicketId(),
                 integratedPayment.getRelatedPaymentId()));
 
-        if (!storedAwardWinner.isPresent()) {
-            throw new Exception("Related payment Id not found");
+        if (storedAwardWinner.isPresent()) {
+            throw new Exception("Related payment Id found for Id: " + integratedPayment.getRelatedPaymentId());
         }
 
-        AwardWinner awardWinner = integratedPaymentMapper.map(storedAwardWinner);
-        Long id = awardWinnerDAO.getId() + 1;
-
+        AwardWinner awardWinner = new AwardWinner();
 
         awardWinner.setAmount(integratedPayment.getAmount());
+        awardWinner.setAwardPeriodId(integratedPayment.getAwardPeriodId());
         awardWinner.setCashback(integratedPayment.getCashbackAmount());
         awardWinner.setJackpot(integratedPayment.getJackpotAmount());
-        awardWinner.setId(id);
+        awardWinner.setStatus(AwardWinner.Status.NEW);
+        awardWinner.setInsertDate(OffsetDateTime.now());
+        awardWinner.setInsertUser("INTEGRATIVI_XLS_CONSAP");
+        awardWinner.setFiscalCode(integratedPayment.getFiscalCode());
+        awardWinner.setTicketId(integratedPayment.getTicketId());
+        awardWinner.setRelatedPaymentId(integratedPayment.getRelatedPaymentId());
 
         return awardWinnerDAO.save(awardWinner);
     }

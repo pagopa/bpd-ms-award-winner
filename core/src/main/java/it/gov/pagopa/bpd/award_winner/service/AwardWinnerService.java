@@ -9,7 +9,10 @@ import java.io.IOException;
  */
 public interface AwardWinnerService {
 
+    AwardWinner insertIntegrationAwardWinner(AwardWinner awardWinner) throws Exception;
+
     AwardWinner updateAwardWinner(AwardWinner awardWinner) throws Exception;
+
 
     void updatingWinnersTwiceWeeks() throws IOException;
 }

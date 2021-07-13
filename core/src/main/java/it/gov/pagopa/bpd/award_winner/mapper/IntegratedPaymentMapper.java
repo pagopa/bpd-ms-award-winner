@@ -11,12 +11,13 @@ public class IntegratedPaymentMapper {
 
     public AwardWinner map(Optional<AwardWinner> integratedPayment) {
 
-        AwardWinner awardWinner = null;
+        AwardWinner awardWinner =  null;
 
         if (integratedPayment.isPresent()) {
             awardWinner = AwardWinner.builder().build();
             BeanUtils.copyProperties(integratedPayment.get(), awardWinner);
             awardWinner.setStatus(AwardWinner.Status.NEW);
+            awardWinner.setId(null);
             awardWinner.setResult(null);
             awardWinner.setCro(null);
             awardWinner.setExecutionDate(null);

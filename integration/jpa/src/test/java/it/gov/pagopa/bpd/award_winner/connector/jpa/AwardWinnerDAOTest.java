@@ -4,10 +4,14 @@ import eu.sia.meda.layers.connector.query.CriteriaQuery;
 import it.gov.pagopa.bpd.award_winner.connector.jpa.model.AwardWinner;
 import it.gov.pagopa.bpd.common.connector.jpa.BaseCrudJpaDAOTest;
 import lombok.Data;
+import org.junit.After;
+import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.function.Function;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AwardWinnerDAOTest extends BaseCrudJpaDAOTest<AwardWinnerDAO, AwardWinner, Long> {
 
     @Autowired
