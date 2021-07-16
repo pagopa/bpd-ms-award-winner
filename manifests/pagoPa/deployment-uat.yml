@@ -18,7 +18,8 @@ spec:
     spec:
       containers:
         - name: bpdmsawardwinner
-          image: cstaruatregistry.azurecr.io/bpdmsawardwinner
+          image: cstaruacr.azurecr.io/bpdmsawardwinner
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           envFrom:
@@ -26,6 +27,8 @@ spec:
                 name: postgres-credentials
             - secretRef:
                 name: bpdmsawardwinner
+            - secretRef:
+                name: application-insights
             - configMapRef:
                 name: eventhub-logging
             - configMapRef:
@@ -69,7 +72,4 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             failureThreshold: 30
-      hostAliases:
-        - hostnames:
-            - bpd-event-uat.servicebus.windows.net
-          ip: 10.70.67.5
+
