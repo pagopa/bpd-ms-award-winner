@@ -25,12 +25,6 @@
             <artifactId>bpd-ms-award-winner-integration-event</artifactId>
         </dependency>
         <dependency>
-            <groupId>it.gov.pagopa.bpd.ms.award_winner.integration</groupId>
-            <artifactId>bpd-ms-award-winner-integration-event</artifactId>
-            <version>1.3.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>net.javacrumbs.shedlock</groupId>
             <artifactId>shedlock-spring</artifactId>
         </dependency>
