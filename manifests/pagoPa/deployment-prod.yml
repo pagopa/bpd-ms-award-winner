@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bpdmsawardwinner
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: bpdmsawardwinner
+  template:
+    metadata:
+      labels:
+        app: bpdmsawardwinner
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: '8080'
+        prometheus.io/scrape: 'true'
+    spec:
+      containers:
+        - name: bpdmsawardwinner
+          image: cstarpacr.azurecr.io/bpdmsawardwinner
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: postgres-credentials
+            - secretRef:
+                name: bpdmsawardwinner
+            - secretRef:
+                name: application-insights
+            - configMapRef:
+                name: eventhub-logging
+            - configMapRef:
+                name: eventhub-common
+            - configMapRef:
+                name: bpdmsawardwinner
+            - configMapRef:
+                name: jvm
+          resources:
+            limits:
+              cpu: 800m
+              memory: 4Gi
+            requests:
+              cpu: 50m
+              memory: 256Mi
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
