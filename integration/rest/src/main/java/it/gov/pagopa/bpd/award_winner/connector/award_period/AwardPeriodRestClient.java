@@ -15,7 +15,7 @@ import java.util.List;
 @FeignClient(name = "${rest-client.award-period.serviceCode}", url = "${rest-client.award-period.base-url}")
 public interface AwardPeriodRestClient {
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @Cacheable(value = "awardPeriods", key = "#root.method.name")
     List<AwardPeriod> getAwardPeriods();

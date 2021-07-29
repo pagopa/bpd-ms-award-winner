@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RequestMapping("/bpd/award-winners")
 public interface BpdAwardWinnerController {
 
-    @PostMapping(value = "/resubmitInfoPayments", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/resubmitInfoPayments", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     void resubmitInfoPayments() throws Exception;
 
